@@ -589,6 +589,7 @@ InAppTCData = {
   }
 }
 ```
+
 ______
 
 ### In-App Details
@@ -696,6 +697,8 @@ Mediation SDK allows app developers to monetize from multiple vendors.
 
 *   Vendor retrieves `IABTCF_gdprApplies` and `IABTCF_tcString` from [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults#1664798?language=objc)(iOS) or [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences.html)(Android), and passes on these GDPR values downstream and passes on these GDPR values downstream.
 
+______
+
 ## Using the CMP API
 
 The following details provide information about how ad tags work, using the version parameter in the `__tcfapi()` function, and how vendors can interact with the API.
@@ -707,7 +710,7 @@ Tag-based demand, especially ad tags, are basically creative files, that are not
 For performance reasons, the preferred way to make this happen in current ad servers are macros. The following two macros the recommendation for ad server implementation:
 
 | Macro | Values |
-| :-- | :-- | :-- |
+| :-- | :-- |
 | `${gdpr}`| <p>**1** - GDPR Applies</p><p>**0** - GDPR does not apply</p><p>**unset** - unknown</p> |
 | `${gdpr_consent}`| Encoded TC String |
 
