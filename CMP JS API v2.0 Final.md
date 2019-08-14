@@ -341,6 +341,8 @@ If an invalid `vendorListVersion` argument is passed with the `getVendorList` co
 
 The callback shall be invoked only once per api call with this command.
 
+______
+
 ### What objects are returned form the API?
 
 ______
@@ -882,33 +884,33 @@ If a CMP is not present, or if the CMP fails to respond, vendors should assume "
 
 Typically, scripts will not need to check if the CMP script is loaded. Scripts can simply call the `__tcfapi` function as it will queue the calls for execution when the full CMP script is loaded.  If the full CMP has been loaded, its `__tcfapi` implementation will handle the call normally. If necessary, the [`'ping'`](#ping) command will return a [`PingReturn`](#pingreturn) object that contains the `boolean` property `cmpLoaded` to indicate whether the cmp is loaded.
 
-#### How does the CMP “stub” API work?
+#### How does the CMP "stub" API work?
 
-1. A CMP-provided synchronous “stub” script must be added by the publisher to their page before any other scripts that rely on `__tcfapi` (this usually means between the `<head></head>` tags of the HTML document).
-2. This “stub” will:
+1. A CMP-provided synchronous "stub" script must be added by the publisher to their page before any other scripts that rely on `__tcfapi` (this usually means between the `<head></head>` tags of the HTML document).
+2. This "stub" will:
     1. Define a queuing function named `__tcfapi` at the `Window` scope.
-    2. For each call to the stubbed `__tcfapi` function all arguments for that call will be enqueued.
+    2. All arguments for a given call to the stubbed `__tcfapi` method will be enqueued as a set.
     3. Define the postMessage handler function for cross-origin iframe requests.
-    4. Add the newly-created postMessage handler function as an event listener on the `Window` object listening for the `‘message’` event.
-    5. Create an iframe named `'__tcfapiLocator'`.
+    4. Add the newly-created `postMessage` handler function as an event listener on the `Window` object listening for the `‘message’` event.
+    5. Create an iframe named `'__tcfapiLocator'` in the current DOM.
 3. When the main CMP implementation script loads and executes, it will:
-    1. Create an internal reference to the queued argument sets of the stub.
+    1. Create an internal reference to the queued argument sets of the "stub".
     2. Redefine the `__tcfapi` function to the CMP’s full API implementation.
-    3. Iterate and dequeue the queued argument sets in a first-in-first-out (FIFO) order and apply each set of arguments to the fully-implemented `__tcfapi` function.
+    3. Iterate and dequeue the queued argument sets in a first-in-first-out (FIFO) order and `apply` each set of arguments to the fully-implemented `__tcfapi` function.
 
-#### Requirements for the CMP “stub” API script
+#### Requirements for the CMP "stub" API script
 
 A CMP must provide stub script to its clients that at least supports the following features/logic:
 
-1. `__tcfapi` function that supports the ping command, with the minimum properties of `cmpLoaded` and `apiVersion`. **Note**: `gdprApplies` may also be set in the [`PingReturn`](#pingreturn) object if the stub knows that this publisher applies GDPR to all traffic.  However, `gdprApplies` may not be available unitl the CMP is finished loading and the value will, therefore, be `undefined`. See the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more.
+1. `__tcfapi` function that supports the ping command, with the minimum properties of `cmpLoaded` and `apiVersion`. **Note**: `gdprApplies` may also be set in the [`PingReturn`](#pingreturn) object if the "stub" is set by the publisher to apply GDPR to all traffic.  However, `gdprApplies` may not be available unitl the CMP is finished loading and the value will, therefore, be `undefined`. See the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more.
 2. Collect all calls to `__tcfapi` that cannot (yet) be handled by the “stub” in a queue
-3. Check if `'__tcfapiLocator'` iframe is present, otherwise create an empty iframe named `'__tcfapiLocator`' in the current DOM.
-4. Create an event listener for postMessage events on the `Window` object. When the event handler function receives a postMessage (`‘message’`) event it should call the `__tcfapi` function with a proxy callback function to send the response back through the postMessage event channel
+3. Check if `window.frames['__tcfapiLocator']` exists, indicating that a CMP is already present, otherwise create an empty iframe named `'__tcfapiLocator`' in the current DOM.
+4. Create an event listener for `postMessage` events on the `Window` object. When the event handler function receives a postMessage (`‘message’`) event it shall proxy the `__tcfapi` function requests to send the response back through the `postMessage` event channel
 5. The stub code must be loaded and executed synchronously before any other scripts that depend on the `__tcfapi` function to be there – this usually means between the `<head></head>` tags of the HTML document – in order to ensure that it can be executed before all calls from third parties.
 
 #### Is there a sample CMP “stub” API script?
 
-This code should be executed on the page before any other scripts that require the `__tcfapi` function – this usually means between the `<head></head>` tags of the HTML document. The tag also includes the postMessage handler.
+This code should be executed on the page before any other scripts that require the `__tcfapi` function – this usually means between the `<head></head>` tags of the HTML document. The sample script also includes the `postMessage` handler.
 
 ```javascript
 <script type="text/javascript">
@@ -1123,7 +1125,7 @@ If not allowing or blocking postMessage and, therefore, implementing the proxy m
 
 #### Without safeFrames, using postMessage
 
-The [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) method may be used from a child iframe to make requests from a parent or any ancestor frame's CMP API. To locate an ancestor frame capable of responding to `postMessage()` CMP API calls search for an ancestor frame that has a child frame named `'__tcflocator'` (see [sample code](#is-there-a-sample-iframe-script-call-to-the-cmp-api)).
+The [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) method may be used from a child iframe to make requests from a parent or any ancestor frame's CMP API. To locate an ancestor frame capable of responding to `postMessage()` CMP API calls search for an ancestor frame that has a child frame named `'__tcfapiLocator'` (see [sample code](#is-there-a-sample-iframe-script-call-to-the-cmp-api)).
 
 CMPs shall create an event listener to handle `postMessage` requests via the [CMP “stub” API script](#how-does-the-cmp-stub-api-work) so that `postMessage` events can be queued and processed by the full-implementation of the CMP API as soon as it is initialized.
 
@@ -1176,7 +1178,7 @@ Below is an exmample script that emulates the in-frame `__tcfapi()` call. It loc
       /**
        * throws a reference error if no frames exist
        */
-      if (frame.frames['__tcflocator']) {
+      if (frame.frames['___tcfapiLocator']) {
 
         cmpFrame = frame;
         break;
