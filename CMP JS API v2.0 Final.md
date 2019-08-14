@@ -987,7 +987,7 @@ If not allowing or blocking postMessage and, therefore, implementing the proxy m
 
 The [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) method may be used from a child iframe to make requests from a parent or any ancestor frame's CMP API. To locate an ancestor frame capable of responding to `postMessage()` CMP API calls search for an ancestor frame that has a child frame named `'__tcflocator'` (see [sample code](#is-there-a-sample-iframe-script-call-to-the-cmp-api)).
 
-CMPs shall create an event listener to handle postMessage requests via the [CMP “stub” API script](#how-does-the-cmp-stub-api-work) so that postMessage events can be queued and processed by the full-implementation of the CMP API as soon as it is initialized.
+CMPs shall create an event listener to handle `postMessage` requests via the [CMP “stub” API script](#how-does-the-cmp-stub-api-work) so that `postMessage` events can be queued and processed by the full-implementation of the CMP API as soon as it is initialized.
 
 **Sent Message**
 
