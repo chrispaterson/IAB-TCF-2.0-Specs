@@ -121,7 +121,7 @@ A value of `false` will be passed as the argument to the `success` callback para
 The `callback` shall be invoked only once per api call with this command.
 
 
-#### ping
+#### `ping`
 
 | argument name | type  | value |
 |--:|:-:|:--|
@@ -132,7 +132,7 @@ The ping command invokes the callback immediately without any asynchronous logic
 
 The `callback` shall be invoked only once per api call with this command.
 
-#### addEventListener
+#### `addEventListener`
 
 | argument name | type  | value |
 |--:|:-:|:--|
@@ -153,7 +153,7 @@ The callback shall be invokedwith `false` as the argument for the `success `para
 
 **Note:** Unlike the other API commands, the `addEventListener` callback may be called as many times as the TC String is changed — callback functions should be defensive and remove themselves as listeners if this behavior is not desired via `removeEventListener`.
 
-#### removeEventListener
+#### `removeEventListener`
 
 | argument name | type  | value |
 |--:|:-:|:--|
@@ -167,7 +167,7 @@ The callback shall be called with `false` as the argument for the `success` para
 
 A CMP may choose to support two optional API commands: [`'getInAppTCData'`](#getinapptcdata) and [`'getVendorList'`](#getvendorlist).
 
-#### getInAppTCData
+#### `getInAppTCData`
 
 | argument name | type  | value |
 |--:|:-:|:--|
@@ -179,7 +179,7 @@ A mobile in-app CMP that uses a web-based UI in a mobile web view may choose to 
 The callback shall be invoked only once per api call with this command.
 
 
-#### getVendorList
+#### `getVendorList`
 
 | argument name | type | optional | value |
 |--:|:---:|:-:|:--|
@@ -195,7 +195,7 @@ The callback shall be invoked only once per api call with this command.
 
 ### What objects are returned form the API?
 
-#### TCData
+#### `TCData`
 
 This object contains both the encoded and unencoded values of the TC String as well as information about the CMP `eventStatus` and whether or not GDPR applies to this user in this context (see the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more).  If GDPR does not apply to this user in this context then only `gdprApplies`, `tcfPolicyVersion`, `cmpId` and `cmpVersion` shall exist in the object. If it is unknown just yet whether GDPR Applies to this user in this context or if this is CMP Stub code then the `callback` shall not be invoked until that `gdprApplies` is known.
 
@@ -369,7 +369,7 @@ TCData = {
   }
 }
 ```
-#### PingReturn
+#### `PingReturn`
 
 This object contains information about the loading status and configuration of the CMP.
 
@@ -444,7 +444,7 @@ PingReturn = {
 | `'hidden'` | displayStatus | User interface is not yet or no longer displayed |
 | `'disabled'` | displayStatus | User interface will not show (e.g. GDPR does not apply or TC data is current and does not need renewal) |
 
-#### InAppTCData
+#### `InAppTCData`
 
 ```javascript
 InAppTCData = {
