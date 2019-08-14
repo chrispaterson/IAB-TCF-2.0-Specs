@@ -152,6 +152,8 @@ ______
 | callback | function | | `function(tcData: TCData, success: boolean)` |
 | parameter | int array | ✔️  | `vendorIds` |
 
+**Example:**
+
 ```javascript
 __tcfapi('getTCData', 2, (tcData, success) => {
 
