@@ -857,6 +857,7 @@ For performance reasons, the preferred way to make this happen in current ad ser
 | `${gdpr_consent}`| Encoded TC String |
 
 **Note**: Values Align with IAB OpenRTB GDPR Advisory
+
 **Note**: For more information on GDPR Applies see the secion ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean).
 
 ### How does the "version" parameter work?
