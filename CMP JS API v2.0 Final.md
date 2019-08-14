@@ -223,7 +223,9 @@ const callback = (tcData, success) => {
     __tcfapi('removeEventListener', 2, (success) => {
 
       if(success) {
+
         // oh good...
+
       }
 
     }, callback);
@@ -263,6 +265,8 @@ ______
 | command | string | `'removeEventListener'` |
 | callback | function | `function(success: boolean)` |
 | parameter | function | previously registered callback (via `addEventListener`) |
+
+**Example:** see [`'addEventListener'`](#addeventlistener)
 
 The callback shall be called with `false` as the argument for the `success` parameter if  the listener could not be removed (e.g. the parameter (`callback`) is not registered or is invalid)).
 
