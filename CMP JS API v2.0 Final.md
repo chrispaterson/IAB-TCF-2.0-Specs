@@ -589,6 +589,7 @@ InAppTCData = {
   }
 }
 ```
+______
 
 ### In-App Details
 
@@ -602,12 +603,9 @@ The steps for integrating a CMP SDK into an app is the following:
 4. The CMP shall set the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults#1664798?language=objc)(iOS) or [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences.html)(Android) variables and vendors will then be able to read from them directly.
 5. Vendors should listen to `IABTCF_* `key updates to retrieve new TC data from [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults#1664798?language=objc)(iOS) or [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences.html)(Android).
 
-
 #### What is the CMP in-app internal structure for the defined API?
 
 [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults#1664798?language=objc)(iOS) or [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences.html)(Android) shall be used to store pre-parsed TC data as well as the TC string by a CMP SDK. It allows:
-
-
 
 *   Vendors to easily access TC data
 *   TC data to persist across app sessions
@@ -619,7 +617,7 @@ The steps for integrating a CMP SDK into an app is the following:
 [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults#1664798?language=objc)(iOS) or [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences.html)(Android) values
 
 | Key | Value(s) |
-| :-- | :-- | :-- |
+| :-- | :-- |
 | `IABTCF_CmpSdkID` | `Number`:  The unsigned integer ID of CMP SDK |
 | `IABTCF_CmpSdkVersion`  | `Number`: The unsigned integer version number of CMP SDK |
 | `IABTCF_PolicyVersion`  | `Number`: The unsigned integer representing the version of the TCF that these consents adhere to. |
