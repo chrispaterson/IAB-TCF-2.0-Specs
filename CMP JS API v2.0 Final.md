@@ -26,7 +26,7 @@
   - [What objects are returned form the API?](#what-objects-are-returned-form-the-api)
     - [`TCData`](#tcdata)
     - [`PingReturn`](#pingreturn)
-    - [Ping Status Codes](#ping-status-codes)
+      - [Ping Status Codes](#ping-status-codes)
     - [`InAppTCData`](#inapptcdata)
   - [In-App Details](#in-app-details)
     - [How is a CMP used in-app?](#how-is-a-cmp-used-in-app)
