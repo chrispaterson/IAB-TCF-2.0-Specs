@@ -172,7 +172,7 @@ __tcfapi('getTCData', 2, (tcData, success) => {
 
 The `vendorIds` array contains the integer-value Vendor IDs for Vendors in which transparency and consent is being requested.
 
-If the `vendorIds` argument is not defined the callback will be called with a [`TCData`](#tcdata) that includes Transparency and Consent values for all Vendors in the [Global Vendor List](#what-is-the-global-vendor-list).  If GDPR does not apply to this user in this context (`gdprApplies=false`) then this user will have no Transparency and Consent values and a TCData object with no Transparency and Consent values for any Vendors will be passed to the callback function. For more on `gdprApplies` see the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean).
+If the `vendorIds` argument is not defined the callback will be called with a [`TCData`](#tcdata) that includes Transparency and Consent values for all Vendors in the [Global Vendor List](#what-is-the-global-vendor-list).  If GDPR does not apply to this user in this context (`gdprApplies=false`) then this user will have no Transparency and Consent values and a TCData object with no Transparency and Consent values for any Vendors will be passed to the callback function. For more on `gdprApplies` see the section ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean).
 
 The callback shall be called immediately and without any asynchronous logic with whatever is available in the current state of the CMP.  To determine the current state the callback will need to evaluate the [`eventStatus`](#addeventlistener) property value.  It is recommended that calling scripts register a listener function via [`addEventListener`](#addeventlistener) instead of `getTCData`, which also exposes a [`TCData`](#tcdata) object, to ensure necessary TC string and decoded TC values under the right circumstances and context for their legal basis as specified in [TCF Policy](https://www.iabeurope.eu/category/policy/tcf-updates/). The consent and legitimate interest values will be `false` in the [`TCData`](#tcdata) object for any unregistered Vendor ID passed in the vendorIds array.  Which, in accordance with [TCF Policy](https://www.iabeurope.eu/category/policy/tcf-updates/), means “No Consent” for _consent_ and “No Legitimate Interest Transparency Established” for _legitimate interest_.
 
@@ -199,7 +199,7 @@ __tcfapi('ping', 2, (pingReturn) => {
 });
 ```
 
-The ping command invokes the callback immediately without any asynchronous logic and returns a [`PingReturn`](#pingreturn) object for determining whether or not the main CMP script has loaded yet and whether GDPR applies; therefore, the only command required to be on the page in a stub before the rest of the commands are implemented. See the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more.
+The ping command invokes the callback immediately without any asynchronous logic and returns a [`PingReturn`](#pingreturn) object for determining whether or not the main CMP script has loaded yet and whether GDPR applies; therefore, the only command required to be on the page in a stub before the rest of the commands are implemented. See the section ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean) for more.
 
 The `callback` shall be invoked only once per api call with this command.
 
@@ -351,7 +351,7 @@ ______
 
 #### `TCData`
 
-This object contains both the encoded and unencoded values of the TC String as well as information about the CMP `eventStatus` and whether or not GDPR applies to this user in this context (see the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more).  If GDPR does not apply to this user in this context then only `gdprApplies`, `tcfPolicyVersion`, `cmpId` and `cmpVersion` shall exist in the object. If it is unknown just yet whether GDPR Applies to this user in this context or if this is CMP Stub code then the `callback` shall not be invoked until that `gdprApplies` is known.
+This object contains both the encoded and unencoded values of the TC String as well as information about the CMP `eventStatus` and whether or not GDPR applies to this user in this context (see the section ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean) for more).  If GDPR does not apply to this user in this context then only `gdprApplies`, `tcfPolicyVersion`, `cmpId` and `cmpVersion` shall exist in the object. If it is unknown just yet whether GDPR Applies to this user in this context or if this is CMP Stub code then the `callback` shall not be invoked until that `gdprApplies` is known.
 
 ``` javascript
 TCData = {
@@ -364,7 +364,7 @@ TCData = {
    * true - GDPR Applies
    * false - GDPR Does not apply
    * undefined - unknown whether GDPR Applies
-   * see the section: "What does the gdprApplies value mean"
+   * see the section: "What does the gdprApplies value mean?"
    */
   gdprApplies: Boolean,
 
@@ -536,7 +536,7 @@ PingReturn = {
    * true - GDPR Applies
    * false - GDPR Does not apply
    * undefined - unknown whether GDPR Applies
-   * see the section: "What does the gdprApplies value mean"
+   * see the section: "What does the gdprApplies value mean?"
    */
   gdprApplies: Boolean,
 
@@ -615,7 +615,7 @@ InAppTCData = {
    * 1 - GDPR Applies
    * 0 - GDPR Does not apply
    * undefined - unknown whether GDPR applies
-   * see the section: "What does the gdprApplies value mean"
+   * see the section: "What does the gdprApplies value mean?"
    */
   gdprApplies: 1,
 
@@ -764,7 +764,7 @@ The steps for integrating a CMP SDK into an app is the following:
 | `IABTCF_CmpSdkID` | `Number`:  The unsigned integer ID of CMP SDK |
 | `IABTCF_CmpSdkVersion`  | `Number`: The unsigned integer version number of CMP SDK |
 | `IABTCF_PolicyVersion`  | `Number`: The unsigned integer representing the version of the TCF that these consents adhere to. |
-| `IABTCF_gdprApplies`  | `Number`: <p>`1` GDPR applies in current context</p><p>`0` - GDPR does _**not**_ apply in current context</p><p>**Unset** - undetermined (default before initialization)</p><p>see the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more</p> |
+| `IABTCF_gdprApplies`  | `Number`: <p>`1` GDPR applies in current context</p><p>`0` - GDPR does _**not**_ apply in current context</p><p>**Unset** - undetermined (default before initialization)</p><p>see the section ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean) for more</p> |
 | `IABTCF_PublisherCC`  | `String`: [Two-letter ISO 3166-1 alpha-2 code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) – Default: `AA` (unknown) |
 | `IABTCF_PurposeOneTreatment`  | `Number`: <p>`0` - no special treatment of purpose one</p><p>`1` - purpose one not disclosed</p><p>**Unset default** - `0`</p><p>Vendors can use this value to determine whether consent for purpose one is required.</p> |
 | `IABTCF_UseNonStandardStacks`  | `Number`: <p>`1` CMP used a non-standard stack</p><p>`0` - CMP did not use a non-standard stack</p> |
