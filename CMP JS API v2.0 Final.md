@@ -187,6 +187,8 @@ ______
 | command | string | `'ping'` |
 | callback | function | `function(PingReturn:object)` |
 
+**Example:**
+
 ```javascript
 __tcfapi('ping', 2, (pingReturn) => {
 
@@ -207,6 +209,8 @@ ______
 |--:|:-:|:--|
 | command | string | `'addEventListener'` |
 | callback | function | `function(tcData: TCData, success: boolean)` |
+
+**Example:**
 
 ```javascript
 const callback = (tcData, success) => {
@@ -275,6 +279,8 @@ ______
 | command | string | `'getInAppTCData'` |
 | callback | function | `function(inAppTCData: InAppTCData, success: boolean)` |
 
+**Example:**
+
 ```javascript
 __tcfapi('getInTCData', 2, (inAppTCData, success) => {
 
@@ -304,6 +310,8 @@ ______
 | command | string | | `'getVendorList'` |
 | callback | function | | `function(gvl: GlobalVendorList, success: boolean)` |
 | parameter | int or string | ✔️  | `vendorListVersion` |
+
+**Example:**
 
 ```javascript
 __tcfapi('getVendorList', 2, (gvl, success) => {
