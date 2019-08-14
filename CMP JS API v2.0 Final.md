@@ -74,7 +74,6 @@ Prescribed use of the TCF establishes an audit trail to help maintain compliance
 
 To participate in the use of the TCF, become familiar with the Policies for using it. To have transparency and consent established and signaled  for your online services, apply to be added to the GVL. To play a role in creating a TC String for signaling status on transparency and user consent, sign up with IAB Europe to become a CMP. CMPs must follow technical standards provided in this document for creating TC Strings in compliance with [TCF Policy](https://www.iabeurope.eu/category/policy/tcf-updates/). They must also follow technical standards  for using the CMP API specified in this document to receive and process information provided in the TC String.
 
-
 ### About the Transparency & Consent Framework
 
 IAB Europe Transparency & Consent Framework (TCF) has a simple objective to help all parties in the digital advertising chain ensure that they comply with the EU’s General Data Protection Regulation and ePrivacy Directive when processing personal data or accessing and/or storing information on a user’s device, such as cookies, advertising identifiers, device identifiers and other tracking technologies. IAB Tech Lab stewards the development of these technical specifications.
@@ -129,18 +128,15 @@ The Global Vendor List contains the following information:
 
 You can learn more about the Global Vendor list on the IAB EU website: [https://iabeurope.eu/tcf](https://iabeurope.eu/tcf)
 
-
 ### How does the CMP provide the API?
 
 Every consent manager MUST provide the following API function:
-
 
 **`__tcfapi(command, version, callback, parameter)`**
 
 The function `__tcfapi` **must always be a function** and cannot be any other type, even if only temporarily on initialization – the API must be able to handle calls at all times.
 
 Secondarily, CMPs must provide a proxy for postMessage events targeted to the `__tcfapi` interface sent from within nested iframes. See [the section on iframes](#how-can-vendors-that-use-iframes-call-the-cmp-api-from-an-iframe) for information on working with IAB SafeFrames.
-
 
 ### What required API commands must a CMP support?
 
@@ -155,6 +151,22 @@ ______
 | command | string | | `'getTCData'` |
 | callback | function | | `function(tcData: TCData, success: boolean)` |
 | parameter | int array | ✔️  | `vendorIds` |
+
+```javascript
+__tcfapi('getTCData', 2, (tcData, success) => {
+
+  if(success) {
+
+    // do something with tcData
+
+  } else {
+
+    // do something else
+
+  }
+
+}, [1,2,3]);
+```
 
 The `vendorIds` array contains the integer-value Vendor IDs for Vendors in which transparency and consent is being requested.
 
@@ -175,6 +187,14 @@ ______
 | command | string | `'ping'` |
 | callback | function | `function(PingReturn:object)` |
 
+```javascript
+__tcfapi('ping', 2, (pingReturn) => {
+
+  // do something with pingReturn
+
+});
+```
+
 The ping command invokes the callback immediately without any asynchronous logic and returns a [`PingReturn`](#pingreturn) object for determining whether or not the main CMP script has loaded yet and whether GDPR applies; therefore, the only command required to be on the page in a stub before the rest of the commands are implemented. See the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more.
 
 The `callback` shall be invoked only once per api call with this command.
@@ -188,17 +208,45 @@ ______
 | command | string | `'addEventListener'` |
 | callback | function | `function(tcData: TCData, success: boolean)` |
 
+```javascript
+const callback = (tcData, success) => {
+
+  if(success && tcData.eventStatus === 'tcloaded') {
+
+    // do something with tcData.tcString
+
+    // remove the ourself to not get called more than once
+    __tcfapi('removeEventListener', 2, (success) => {
+
+      if(success) {
+        // oh good...
+      }
+
+    }, callback);
+
+
+  } else {
+
+    // do something else
+
+  }
+
+}
+
+__tcfapi('addEventListener', 2, callback);
+```
+
 Registers a callback function with a CMP. The callback will be invoked with the [`TCData`](#tcdata) object as an argument whenever the TC String is changed and a new one is available. The [`eventStatus`](#addeventlistener) property of the [`TCData`](#tcdata) object shall be one of the following:
 
 | eventStatus | Description |
 | :--- | :--- |
 | `'tcloaded'` | This shall be the value for the `eventStatus` property of the [`TCData`](#tcdata) object when a CMP is loaded and is prepared to surface a TC String to any calling scripts on the page. A CMP is only prepared to surface a TC String for this `eventStatus` if an existing, <span style="text-decoration:underline;">valid</span> TC String is available to the CMP and it is not intending to surface the UI. If, however, the CMP will surface the UI because of an invalid TC String (e.g. it is too old, incorrect or does not reflect all the information the CMP needs to gather from the user) then an event with this `eventStatus` must not be triggered. |
-| `'cmpuishown'` | This shall be the value for the `eventStatus` property of the [`TCData`](#tcdata) object any time the UI is surfaced or re-surfaced, a TC String is available and has rendered “Transparency” in accordance with the [TCF Policy](https://www.iabeurope.eu/category/policy/tcf-updates/). The CMP shall create a TC string with all the surfaced vendors’ legitimate interest signals set to true and all the consent signals set to false.  If previous TC signals are present a CMP may also merge those into the now-available TC String in accordance with the policy. |
+| `'cmpuishown'` | This shall be the value for the `eventStatus` property of the [`TCData`](#tcdata) object any time the UI is surfaced or re-surfaced, a TC String is available and has rendered "Transparency" in accordance with the [TCF Policy](https://www.iabeurope.eu/category/policy/tcf-updates/). The CMP shall create a TC string with all the surfaced vendors’ legitimate interest signals set to true and all the consent signals set to false.  If previous TC signals are present a CMP may also merge those into the now-available TC String in accordance with the policy. |
 | `'useractioncomplete'` | This shall be the value for the `eventStatus` property of the [`TCData`](#tcdata) object whenever a user has confirmed or re-confirmed their choices in accordance with [TCF Policy](https://www.iabeurope.eu/category/policy/tcf-updates/) and a CMP is prepared to respond to any calling scripts with the corresponding TC String. |
 
-The CMP will, in most cases, invoke the callback when  either the `“tcloaded”` OR `“cmpuishown”` + `“useractioncomplete”` `eventStatus`(s) occur, but never for all three `eventStatuses` within the same page view. However, if an existing and valid TC string is available and the CMP does not intend to to surface a UI automatically (`“tcloaded”`) but the user manually surfaces the UI and changes their selected choices (`“cmpuishown”`+`”useractioncomplete”`) all three `eventStatuses` would appear within the same page view.
+The CMP will, in most cases, invoke the callback when  either the `'tcloaded'` OR `'cmpuishown'` + `'useractioncomplete'` `eventStatus`(s) occur, but never for all three `eventStatuses` within the same page view. However, if an existing and valid TC string is available and the CMP does not intend to to surface a UI automatically (`'tcloaded'`) but the user manually surfaces the UI and changes their selected choices (`'cmpuishown'` + `'useractioncomplete'`) all three `eventStatuses` would appear within the same page view.
 
-The callback shall be invokedwith `false` as the argument for the `success `parameter if the callback could not be registered as a listener for any reason.
+The callback shall be invokedwith `false` as the argument for the `success` parameter if the callback could not be registered as a listener for any reason.
 
 **Note:** Unlike the other API commands, the `addEventListener` callback may be called as many times as the TC String is changed — callback functions should be defensive and remove themselves as listeners if this behavior is not desired via `removeEventListener`.
 
@@ -227,6 +275,22 @@ ______
 | command | string | `'getInAppTCData'` |
 | callback | function | `function(inAppTCData: InAppTCData, success: boolean)` |
 
+```javascript
+__tcfapi('getInTCData', 2, (inAppTCData, success) => {
+
+  if(success) {
+
+    // do something with inAppTCData
+
+  } else {
+
+    // do something else
+
+  }
+
+});
+```
+
 A mobile in-app CMP that uses a web-based UI in a mobile web view may choose to implement API calls with this command for the purpose of retrieving the TC String and pre-parsed TC signals from that web-based UI for the purpose of storing them in the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults#1664798?language=objc)(iOS) or [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences.html)(Android). (see [What is the CMP in-app internal structure for the defined API?](#what-is-the-cmp-in-app-internal-structure-for-the-defined-api))
 
 The callback shall be invoked only once per api call with this command.
@@ -237,11 +301,27 @@ ______
 
 | argument name | type | optional | value |
 |--:|:---:|:-:|:--|
-| command | string | | `"getVendorList"` |
+| command | string | | `'getVendorList'` |
 | callback | function | | `function(gvl: GlobalVendorList, success: boolean)` |
 | parameter | int or string | ✔️  | `vendorListVersion` |
 
-Calling with this command and a valid `vendorListVersion` parameter shall return a `GlobalVendorList` object to the `callback` function.  The caller may specify a [Global Vendor List](#what-is-the-global-vendor-list) version number with the `vendorListVersion` parameter.  If no version is specified, the [Global Vendor List](#what-is-the-global-vendor-list) version returned shall be the same as that which is encoded in the current TC String – If no TC String exists the latest version of the [Global Vendor List](#what-is-the-global-vendor-list) shall be returned.  The calling function may also pass `“LATEST”` as the argument to the `vendorListVersion` parameter to explicitly receive the latest [Global Vendor List](#what-is-the-global-vendor-list) version as the `GlobalVendorList` object.
+```javascript
+__tcfapi('getVendorList', 2, (gvl, success) => {
+
+  if(success) {
+
+    // do something with gvl
+
+  } else {
+
+    // do something else
+
+  }
+
+}, 'LATEST');
+```
+
+Calling with this command and a valid `vendorListVersion` parameter shall return a `GlobalVendorList` object to the `callback` function.  The caller may specify a [Global Vendor List](#what-is-the-global-vendor-list) version number with the `vendorListVersion` parameter.  If no version is specified, the [Global Vendor List](#what-is-the-global-vendor-list) version returned shall be the same as that which is encoded in the current TC String – If no TC String exists the latest version of the [Global Vendor List](#what-is-the-global-vendor-list) shall be returned.  The calling function may also pass `'LATEST'` as the argument to the `vendorListVersion` parameter to explicitly receive the latest [Global Vendor List](#what-is-the-global-vendor-list) version as the `GlobalVendorList` object.
 
 If an invalid `vendorListVersion` argument is passed with the `getVendorList` command the callback function shall receive a `null` argument for the `GlobalVendorList` parameter and the `success` parameter shall receive a `false` argument.  Valid `vendorListVersion`s are integers (or integer strings) greater than `1`.  The `success` parameter shall receive a `false` argument for any unsuccessful call with the `getVendorList` command. (eg. invalid `vendorListVersion` argument, network error, etc…)
 
