@@ -979,11 +979,9 @@ There are two ways to request TC Data from a parent or ancestor’s frame: [Via 
 
 #### Via safeFrames
 
-When safeFrames are used to proxy API requests no changes are required for the CMP or the vendor. SafeFrame implementations should either allow post messages or implement a proxy `tcfapi()` interface for a caller script within a sandbox that would otherwise be blocked. This proxy interface internally uses the safeFrame messaging protocol to interface with the full CMP implementation of the API on the publisher's top frame and proxies responses back to the sandboxed caller.
+When safeFrames are used to proxy API requests no changes are required for the CMP or the vendor. SafeFrame implementations should either allow post messages or implement a proxy `tcfapi()` interface for a caller script within a sandbox that would otherwise be blocked. This proxy interface internally uses the safeFrame messaging protocol to interface with the full CMP implementation of the API on the publisher's top frame and proxies responses back to the sandboxed caller.  If allowing postMessage, vendors will not be required to accomodate any special protocols; they will simply use the [postMessage method without safeFrame](#without-safeframes-using-postmessage).
 
-If allowing postMessage, vendors will not be required to accomodate any special protocols; they will simply use the [postMessage method without safeFrame](#without-safeframes-using-postmessage).
-
-If blocking postMessage and implementing the proxy, vendors will see a local-to-the-sandboxed-iframe-scope `__tcfapi()` proxy method that must behave the same as the asynchronous CMP `__tcfapi()` full-implementation method on the publisher’s top frame.
+If not allowing or blocking postMessage and, therefore, implementing the proxy method, vendors will see a local-to-the-sandboxed-iframe-scope `__tcfapi()` proxy method that must behave the same as the asynchronous CMP `__tcfapi()` full-implementation method on the publisher’s top frame.
 
 #### Without safeFrames, using postMessage
 
