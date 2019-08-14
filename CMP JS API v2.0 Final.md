@@ -102,6 +102,8 @@ Secondarily, CMPs must provide a proxy for postMessage events targeted to the `_
 
 All CMPs must support four required API commands: [`'getTCData'`](#gettcdata), [`'ping'`](#ping), [`'addEventListener'`](#addeventlistener) and [`'removeEventListener'`](#removeeventlistener).
 
+______
+
 #### `getTCData`
 
 | argument name | type | optional | value |
@@ -120,6 +122,7 @@ A value of `false` will be passed as the argument to the `success` callback para
 
 The `callback` shall be invoked only once per api call with this command.
 
+______
 
 #### `ping`
 
@@ -131,6 +134,8 @@ The `callback` shall be invoked only once per api call with this command.
 The ping command invokes the callback immediately without any asynchronous logic and returns a [`PingReturn`](#pingreturn) object for determining whether or not the main CMP script has loaded yet and whether GDPR applies; therefore, the only command required to be on the page in a stub before the rest of the commands are implemented. See the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more.
 
 The `callback` shall be invoked only once per api call with this command.
+
+______
 
 #### `addEventListener`
 
@@ -153,6 +158,8 @@ The callback shall be invokedwith `false` as the argument for the `success `para
 
 **Note:** Unlike the other API commands, the `addEventListener` callback may be called as many times as the TC String is changed — callback functions should be defensive and remove themselves as listeners if this behavior is not desired via `removeEventListener`.
 
+______
+
 #### `removeEventListener`
 
 | argument name | type  | value |
@@ -167,6 +174,8 @@ The callback shall be called with `false` as the argument for the `success` para
 
 A CMP may choose to support two optional API commands: [`'getInAppTCData'`](#getinapptcdata) and [`'getVendorList'`](#getvendorlist).
 
+______
+
 #### `getInAppTCData`
 
 | argument name | type  | value |
@@ -178,6 +187,7 @@ A mobile in-app CMP that uses a web-based UI in a mobile web view may choose to 
 
 The callback shall be invoked only once per api call with this command.
 
+______
 
 #### `getVendorList`
 
@@ -195,10 +205,11 @@ The callback shall be invoked only once per api call with this command.
 
 ### What objects are returned form the API?
 
+______
+
 #### `TCData`
 
 This object contains both the encoded and unencoded values of the TC String as well as information about the CMP `eventStatus` and whether or not GDPR applies to this user in this context (see the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more).  If GDPR does not apply to this user in this context then only `gdprApplies`, `tcfPolicyVersion`, `cmpId` and `cmpVersion` shall exist in the object. If it is unknown just yet whether GDPR Applies to this user in this context or if this is CMP Stub code then the `callback` shall not be invoked until that `gdprApplies` is known.
-
 
 ``` javascript
 TCData = {
@@ -369,6 +380,9 @@ TCData = {
   }
 }
 ```
+
+______
+
 #### `PingReturn`
 
 This object contains information about the loading status and configuration of the CMP.
@@ -443,6 +457,8 @@ PingReturn = {
 | `'visible'` | displayStatus | User interface is currently displayed |
 | `'hidden'` | displayStatus | User interface is not yet or no longer displayed |
 | `'disabled'` | displayStatus | User interface will not show (e.g. GDPR does not apply or TC data is current and does not need renewal) |
+
+______
 
 #### `InAppTCData`
 
@@ -573,6 +589,7 @@ InAppTCData = {
   }
 }
 ```
+
 ### In-App Details
 
 #### How is a CMP used in-app?
