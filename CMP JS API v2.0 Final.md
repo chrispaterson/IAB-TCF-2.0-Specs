@@ -857,6 +857,7 @@ For performance reasons, the preferred way to make this happen in current ad ser
 | `${gdpr_consent}`| Encoded TC String |
 
 **Note**: Values Align with IAB OpenRTB GDPR Advisory
+**Note**: For more information on GDPR Applies see the secion ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean).
 
 ### How does the "version" parameter work?
 
@@ -880,7 +881,7 @@ If the argument is an integer higher than `1`, the CMP shall invoke the callbbac
 
 Scripts can check for the presence of a function named `__tcfapi` – if it exists then a CMP can be assumed to be present for scripts.  In iframes, the presence of a CMP can be determined by the existence of a specially-named iframe named `"__tcfapiLocator"` in the parent (or above) frame. The CMP shall create an iframe as a signal to scripts nested in other iframes that a CMP exists in a higher frame and name it `"__tcfapiLocator"` on the current `DOM` to indicate its own presence; since iframe properties can be accessed from other iframes. Publishers must load the CMP in a parent (or ancestor) of all iframes that may need to establish a GDPR legal basis.
 
-If a CMP is not present, or if the CMP fails to respond, vendors should assume "no consent" and “no legitimate interest transparency established” in contexts where GDPR applies (see the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more).
+If a CMP is not present, or if the CMP fails to respond, vendors should assume "no consent" and “no legitimate interest transparency established” in contexts where GDPR applies (see the section ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean) for more).
 
 #### How can scripts determine if the CMP script is loaded yet?
 
@@ -904,7 +905,7 @@ Typically, scripts will not need to check if the CMP script is loaded. Scripts c
 
 A CMP must provide stub script to its clients that at least supports the following features/logic:
 
-1. `__tcfapi` function that supports the ping command, with the minimum properties of `cmpLoaded` and `apiVersion`. **Note**: `gdprApplies` may also be set in the [`PingReturn`](#pingreturn) object if the "stub" is set by the publisher to apply GDPR to all traffic.  However, `gdprApplies` may not be available unitl the CMP is finished loading and the value will, therefore, be `undefined`. See the section ["What does the gdprApplies value mean"](#what-does-the-gdprapplies-value-mean) for more.
+1. `__tcfapi` function that supports the ping command, with the minimum properties of `cmpLoaded` and `apiVersion`. **Note**: `gdprApplies` may also be set in the [`PingReturn`](#pingreturn) object if the "stub" is set by the publisher to apply GDPR to all traffic.  However, `gdprApplies` may not be available unitl the CMP is finished loading and the value will, therefore, be `undefined`. See the section ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean) for more.
 2. Collect all calls to `__tcfapi` that cannot (yet) be handled by the “stub” in a queue
 3. Check if `window.frames['__tcfapiLocator']` exists, indicating that a CMP is already present, otherwise create an empty iframe named `'__tcfapiLocator`' in the current DOM.
 4. Create an event listener for `postMessage` events on the `Window` object. When the event handler function receives a postMessage (`‘message’`) event it shall proxy the `__tcfapi` function requests to send the response back through the `postMessage` event channel
