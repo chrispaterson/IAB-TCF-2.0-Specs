@@ -929,7 +929,7 @@ This code should be executed on the page before any other scripts that require t
       /**
        * check for other CMPs
        */
-      let otherCMP = !!(win.frames['__tcfapiLocator']);
+      const otherCMP = !!(win.frames['__tcfapiLocator']);
 
       if (!otherCMP) {
 
