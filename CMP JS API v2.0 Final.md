@@ -742,7 +742,7 @@ The steps for integrating a CMP SDK into an app is the following:
 
 1. An app publisher should embed a CMP SDK – The setup and configuration as well as the protocol for  how to initialize the CMP SDK  are all proprietary to each CMP SDK.
 2. Since more than one CMP SDK may be included in publishers' linked SDKs, the publisher must initialize only one of them. The initialized CMP shall set `IABTCF_CmpSdkId` with its ID as soon as it is initialized in the app to signal to vendors that a CMP is present.
-3. The CMP SDK will determine if GDPR applies to this user in this context. But, a publisher may choose to initialize a CMP dialogue UI manually.
+3. The CMP SDK will determine if GDPR applies (see the section ["What does the gdprApplies value mean?"](#what-does-the-gdprapplies-value-mean)) to this user in this context. But, a publisher may choose to initialize a CMP dialogue UI manually.
 4. The CMP shall set the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults#1664798?language=objc)(iOS) or [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences.html)(Android) variables and vendors will then be able to read from them directly.
 5. Vendors should listen to `IABTCF_* `key updates to retrieve new TC data from [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults#1664798?language=objc)(iOS) or [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences.html)(Android).
 
@@ -1131,7 +1131,7 @@ CMPs shall create an event listener to handle `postMessage` requests via the [CM
 
 **Sent Message**
 
-The sent message shall follow the form outlined below. The command, parameter and version object properties correspond to their namesake parameters defined as method argument parameters for `__tcfapi()` method. The "sent message" also requires a unique `callId` property to help identify the request.
+The sent message shall follow the form outlined below. The command, parameter and version object properties correspond to their namesake parameters defined as method argument parameters for `__tcfapi()` method. The “sent message” also requires a unique callId property to help match the request with a response
 
 ```javascript
 {
@@ -1178,6 +1178,7 @@ Below is an exmample script that emulates the in-frame `__tcfapi()` call. It loc
       /**
        * throws a reference error if no frames exist
        */
+
       if (frame.frames['___tcfapiLocator']) {
 
         cmpFrame = frame;
@@ -1202,6 +1203,7 @@ Below is an exmample script that emulates the in-frame `__tcfapi()` call. It loc
   * From the caller's perspective, this function behaves identically to the
   * CMP API's __tcfapi call
   */
+
   window.__tcfapi = function(cmd, version, callback, arg) {
 
     if (!cmpFrame) {
@@ -1223,6 +1225,7 @@ Below is an exmample script that emulates the in-frame `__tcfapi()` call. It loc
       /**
        * map the callback for lookup on response
        */
+
       cmpCallbacks[callId] = callback;
       cmpFrame.postMessage(msg, '*');
 
@@ -1230,14 +1233,19 @@ Below is an exmample script that emulates the in-frame `__tcfapi()` call. It loc
 
   };
 
-  /**
-    * when we get the return message, call the stashed callback
-    */
   function postMessageHandler(event) {
+
+  /**
+    * when we get the return message, call the mapped callback
+    */
 
     let json = {};
 
     try {
+
+      /**
+        * if this isn't valid JSON then this will throw an error
+        */
 
       json = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
 
@@ -1247,7 +1255,15 @@ Below is an exmample script that emulates the in-frame `__tcfapi()` call. It loc
 
     if (payload) {
 
+      /**
+        * messages we care about will have a payload
+        */
+
       if (typeof cmpCallbacks[payload.callId] === 'function') {
+
+        /**
+         * call the mapped callback and then remove the reference
+         */
 
         cmpCallbacks[payload.callId](payload.returnValue, payload.success);
         cmpCallbacks[payload.callId] = null;
