@@ -1058,7 +1058,7 @@ Below is an exmample script that emulates the in-frame `__tcfapi()` call. It loc
   }
 
  /**
-  * Set up a __tcfapi proxy function to do the postMessage and map the callback.
+  * Set up a __tcfapi proxy method to do the postMessage and map the callback.
   * From the caller's perspective, this function behaves identically to the
   * in-frame __tcfapi call
   */
