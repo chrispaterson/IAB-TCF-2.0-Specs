@@ -961,6 +961,7 @@ This code should be executed on the page before any other scripts that require t
            * quickly than relying on DOMContentLoaded or
            * other events.
            */
+
           setTimeout(addFrame, 5);
 
         }
@@ -971,6 +972,7 @@ This code should be executed on the page before any other scripts that require t
        * if there was not another CMP then we have
        * succeeded
        */
+
       return !otherCMP;
 
     }
@@ -1043,7 +1045,7 @@ This code should be executed on the page before any other scripts that require t
     function postMessageEventHandler(event) {
 
       const msgIsString = typeof event.data === 'string';
-      let json;
+      let json = {};
 
       try {
 
@@ -1052,17 +1054,10 @@ This code should be executed on the page before any other scripts that require t
          * to have in a try/catch because often messages may come
          * through that are not JSON
          */
+
         json = msgIsString ? JSON.parse(event.data) : event.data;
 
-      } catch (ignore) {
-
-        /**
-         * Not a message we care about...  If we can't parse it
-         * then it ain't no good
-         */
-        json = {};
-
-      }
+      } catch (ignore) {}
 
       const payload = json.__tcfapiCall;
 
@@ -1087,6 +1082,7 @@ This code should be executed on the page before any other scripts that require t
             /**
              * If we were given a string, we'll respond in kind
              */
+
             returnMsg = JSON.stringify(returnMsg);
 
           }
