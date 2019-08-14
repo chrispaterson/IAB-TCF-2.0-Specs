@@ -649,7 +649,7 @@ InAppTCData = {
    * whether the vendor requires Purpose 1 consent.
    *
    * 0 - There is no special Purpose 1 treatmentstatus. Purpose 1 was
-   * disclosed normally (consent) as expected by Policy.
+   * disclosed normally (consent) as expected by TCF Policy.
    */
   purposeOneTreatment: 1,
 
@@ -731,7 +731,6 @@ InAppTCData = {
   }
 }
 ```
-
 ______
 
 ### In-App Details
