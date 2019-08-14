@@ -270,6 +270,8 @@ ______
 
 The callback shall be called with `false` as the argument for the `success` parameter if  the listener could not be removed (e.g. the parameter (`callback`) is not registered or is invalid)).
 
+______
+
 ### What optional API commands might a CMP support?
 
 A CMP may choose to support two optional API commands: [`'getInAppTCData'`](#getinapptcdata) and [`'getVendorList'`](#getvendorlist).
