@@ -283,7 +283,7 @@ The supported URL parameters and the corresponding macros are defined below:
    </td>
    <td><code>gdpr_consent_xxxxx</code>
 <p>
-(<code>xxxxx</code> is numeric Vendor ID - the ID of the vendor on the GVL who is expecting this URL call)
+(<code>xxxxx</code> is numeric Vendor ID - the ID of the vendor on the <a href="#the-global-vendor-list">GVL</a> who is expecting this URL call)
    </td>
    <td><code>&gdpr_consent=${gdpr_consent_xxxxx}</code>
 <p>
@@ -575,9 +575,9 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>12 bits
    </td>
-   <td>Version of the GVL used to create this string.
+   <td>Version of the <a href="#the-global-vendor-list">GVL</a> used to create this string.
    </td>
-   <td>Version of the GVL used to create this TC String.
+   <td>Version of the <a href="#the-global-vendor-list">GVL</a> used to create this TC String.
    </td>
   </tr>
   <tr>
@@ -585,9 +585,9 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>6 bits
    </td>
-   <td>Version of policy used within GVL
+   <td>Version of policy used within <a href="#the-global-vendor-list">GVL</a>
    </td>
-   <td>From the corresponding field in the GVL that was used for obtaining consent. A new policy version invalidates existing strings and requires CMPs to re-establish transparency and consent from users.
+   <td>From the corresponding field in the <a href="#the-global-vendor-list">GVL</a> that was used for obtaining consent. A new policy version invalidates existing strings and requires CMPs to re-establish transparency and consent from users.
    </td>
   </tr>
   <tr>
