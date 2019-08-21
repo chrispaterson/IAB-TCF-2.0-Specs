@@ -194,8 +194,8 @@ There are two main contexts in which a TC String can be created:
 
 
 
-*   **Service-specific** - A  TC String in this context is only used by the site(s) or app(s) on which it is running. One is created for every user on a given site/app or group of sites/apps. They may contain [Publisher restrictions](#what-are-publisher-restrictions), a [Publisher TC](#publisher-purposes-transparency-and-consent) segment and an [AllowedVendors](#allowed-vendors-oob) segment.
-*   **Global** - A TC String in this context is saved globally and is shared by CMPs running onsites across the web; When stored globally, they must <span style="text-decoration:underline;">NOT</span> contain [Publisher restrictions](#what-are-publisher-restrictions) or a [Publisher TC](#publisher-purposes-transparency-and-consent) segment but they may contain a [DisclosedVendors](#disclosed-vendors-oob) segment.
+*   **Service-specific** - A  TC String in this context is only used by the site(s) or app(s) on which it is running. One is created for every user on a given site/app or group of sites/apps. They may contain [Publisher restrictions](#what-are-publisher-restrictions), a _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment and an _**[AllowedVendors](#allowed-vendors-oob)**_ segment.
+*   **Global** - A TC String in this context is saved globally and is shared by CMPs running onsites across the web; When stored globally, they must <span style="text-decoration:underline;">NOT</span> contain [Publisher restrictions](#what-are-publisher-restrictions) or a _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment but they may contain a _**[DisclosedVendors](#disclosed-vendors-oob)**_ segment.
 
 CMPs must be set up to operate in either a service-specific or global configuration. If the Publisher-operated CMP declares that the processing disclosed is, for example, data processing on this site and on other sites or apps where third-party companies also operate, then the scope is global and that TC String is used and stored in a global context.
 
@@ -1352,7 +1352,7 @@ Signals which vendors the publisher permits to use OOB legal bases.
 
 Publishers may need to establish transparency and consent for a set of purposes for their own data use. For example, a publisher that wants to set a frequency-capping first-party cookie should request user consent for Purpose 1 "Store and/or access information on a device" in jurisdictions where it is required.
 
-The [Publisher TC](#publisher-purposes-transparency-and-consent) segment in the TC string represents publisher purposes transparency & consent signals which is different than the other TC String segments; they are used to collect consumer purposes transparency & consent for vendors. This segment supports the standard list of purposes defined by the TCF as well as Custom Purposes defined by the publisher if they so choose.
+The _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment in the TC string represents publisher purposes transparency & consent signals which is different than the other TC String segments; they are used to collect consumer purposes transparency & consent for vendors. This segment supports the standard list of purposes defined by the TCF as well as Custom Purposes defined by the publisher if they so choose.
 
 
 <table>
