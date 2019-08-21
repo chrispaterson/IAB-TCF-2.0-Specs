@@ -468,17 +468,18 @@ There are 4 distinct TC String segments that are joined together on a “dot” 
 *   Allowed vendors for restricting OOB signaling to select vendors, and
 *   Publisher purposes transparency and consent for their own data uses.
 
-The [Core String](#the-core-string) is always required and comes first and includes all the details required for communicating basic vendor transparency and consent. The remaining optional and arbitrarily ordered segments represent support for [out-of-band (OOB)](#signaling-oob-in-the-tc-string) signaling and [publisher purposes transparency and consent (publisher TC)](##publisher-purposes-transparency-and-consent).  A TC String with all four segments is possible in certain conditions.
+The _**[Core String](#the-core-string)**_ is always required and comes first and includes all the details required for communicating basic vendor transparency and consent. The remaining optional and arbitrarily ordered segments represent support for [out-of-band (OOB)](#signaling-oob-in-the-tc-string) signaling and [publisher purposes transparency and consent (publisher TC)](##publisher-purposes-transparency-and-consent).  A TC String with all four segments is possible in certain conditions.
 
 For example, a globally-scoped TC String with all four segments present would be surfaced through CMP API – not stored – and look like:
 
-[ [Core String](#the-core-string) ].[ [Disclosed Vendors (OOB)](#disclosed-vendors-oob) ].[ [Allowed Vendors (OOB)](#allowed-vendors-oob) ].[ [Publisher TC](#publisher-purposes-transparency-and-consent) ]
+[ _**[Core String](#the-core-string)**_ ].[ [Disclosed Vendors](#disclosed-vendors-oob)**_ ].[ _**[AllowedVendors](#allowed-vendors-oob)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ ]
+
 ```
 BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA.DqFENCAmeAENCDA.OevsguAfDq
 ```
 A service-specific TC String must contain a Core TC String and may optionally contain a [Publisher TC](#publisher-purposes-transparency-and-consent) segment, but must not contain the OOB-related segments because those segments are not allowed in service-specific contexts:
 
-[ [Core String](#the-core-string) ].[ [Publisher TC](#publisher-purposes-transparency-and-consent) ]
+[ _**[Core String](#the-core-string)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ ]
 
 ```
 BObdrPUOevsguAfDqFENCNAAAAAmeAAA.OevsguAfDq
