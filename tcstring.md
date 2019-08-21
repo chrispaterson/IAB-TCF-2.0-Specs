@@ -90,17 +90,17 @@ Table of Contents
 
 ## Introduction
 
-This document is one of the IAB Europe Transparency and Consent Framework Specifications. It defines the technical implementation of the structure and encoding for a Transparency and Consent String (TC String), and the format for a Global Vendor List (GVL) maintained by IAB Europe. The TC String is a technical component of the IAB Europe Transparency & Consent Framework (TCF).
+This document is one of the IAB Europe Transparency and Consent Framework Specifications. It defines the technical implementation of the structure and encoding for a Transparency and Consent String (TC String), and the format for a [Global Vendor List (GVL)](#the-global-vendor-list) maintained by IAB Europe. The TC String is a technical component of the IAB Europe Transparency & Consent Framework (TCF).
 
 The General Data Protection Regulation (GDPR) requires a high level of accountability for how personal data is processed. While important to all parties in the digital advertising ecosystem, implementation of the GDPR came with heavy technical challenges.
 
 The GDPR requires, amongst others, a legal basis for such processing. The two most relevant legal bases are the consent of the user to the processing of their personal data, and the legitimate interests of the controller or a third party to the processing of a user’s personal data, provided that the interests and fundamental rights of the user are not overriding. Both legal bases require the provision of disclosures to ensure transparency, and the opportunity for user choice either through the user’s consent to the processing of their personal data before the processing starts if the legal basis is consent, or through the user’s objection to the processing of their personal data after the processing starts if the legal basis is a legitimate interest. Under the GDPR, controllers are required to create and maintain records of compliance, including, but not limited to user consent records. This warrants clear standards for a common technical solution for all affected parties and policies to govern how that solution is used.
 
-IAB Europe established the TCF to support compliance with the GDPR in the context of digital advertising. This framework is built on four components: a Global Vendor List (GVL), a Transparency and Consent String (TC String), an API for Consent Management Providers (CMPs) to create and process the TC String, and the Policies that govern how the TCF is used.
+IAB Europe established the TCF to support compliance with the GDPR in the context of digital advertising. This framework is built on four components: a [Global Vendor List (GVL)](#the-global-vendor-list), a Transparency and Consent String (TC String), an API for Consent Management Providers (CMPs) to create and process the TC String, and the Policies that govern how the TCF is used.
 
 Prescribed use of the TCF may support compliance with the GDPR, but the real benefit to the digital advertising ecosystem is a safer Internet for consumers, and more reliable data for brands and publishers. As adoption of the TCF increases, compliance becomes more scalable and data becomes more meaningful.
 
-To participate in the use of the TCF, vendors must make a public attestation of compliance with the [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf) for using it. To have transparency and consent established and signaled status for your online services stored in a global database, apply to be added to the GVL. To play a role in creating a TC String for signaling status on transparency and user consent, sign up with IAB Europe to become a CMP. CMPs must follow technical standards provided in this document for creating TC Strings in compliance with TCF [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf). They must also follow technical standards guidance for using the CMP API specified in this document to receive and process information provided in a TC String.
+To participate in the use of the TCF, vendors must make a public attestation of compliance with the [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf) for using it. To have transparency and consent established and signaled status for your online services stored in a global database, apply to be added to the [GVL](#the-global-vendor-list). To play a role in creating a TC String for signaling status on transparency and user consent, sign up with IAB Europe to become a CMP. CMPs must follow technical standards provided in this document for creating TC Strings in compliance with TCF [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf). They must also follow technical standards guidance for using the CMP API specified in this document to receive and process information provided in a TC String.
 
 
 ### Audience
@@ -207,7 +207,7 @@ If the disclosures do not describe a global scope, or explicitly state service-s
 Version 2.0 of the Framework introduced the ability for publishers to signal restrictions on how vendors may process data:
 
  * **Purposes.** Restrict the purposes for which personal data is processed by a vendor.
- * **Legal basis.** Specify the legal basis upon which a publisher requires a vendor to operate where a vendor has signaled flexibility on legal basis in the GVL.
+ * **Legal basis.** Specify the legal basis upon which a publisher requires a vendor to operate where a vendor has signaled flexibility on legal basis in the [GVL](#the-global-vendor-list).
 
 Publisher restrictions are custom requirements specified by a publisher and must only be saved to a service-specific TC String.
 
