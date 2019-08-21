@@ -477,7 +477,7 @@ For example, a globally-scoped TC String with all four segments present would be
 ```
 BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA.DqFENCAmeAENCDA.OevsguAfDq
 ```
-A service-specific TC String must contain a Core TC String and may optionally contain a [Publisher TC](#publisher-purposes-transparency-and-consent) segment, but must not contain the OOB-related segments because those segments are not allowed in service-specific contexts:
+A service-specific TC String must contain a Core TC String and may optionally contain a _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ segment, but must not contain the OOB-related segments because those segments are not allowed in service-specific contexts:
 
 [ _**[Core String](#the-core-string)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ ]
 
