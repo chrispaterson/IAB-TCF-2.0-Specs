@@ -283,11 +283,11 @@ The supported URL parameters and the corresponding macros are defined below:
    </td>
    <td><code>gdpr_consent_xxxxx</code>
 <p>
-(<code>xxxxx</code> is numeric vendor ID - the ID of the vendor on the GVL who is expecting this URL call)
+(<code>xxxxx</code> is numeric Vendor ID - the ID of the vendor on the GVL who is expecting this URL call)
    </td>
    <td><code>&gdpr_consent=${gdpr_consent_xxxxx}</code>
 <p>
-E.g. <code>&gdpr_consent=${gdpr_consent_123}</code> for vendor ID 123.
+E.g. <code>&gdpr_consent=${gdpr_consent_123}</code> for Vendor ID 123.
    </td>
   </tr>
   <tr>
@@ -301,7 +301,7 @@ E.g. <code>&gdpr_consent=${gdpr_consent_123}</code> for vendor ID 123.
 </table>
 
 
-The service making the call must replace the macros with appropriate values described in the table below. For macro `${gdpr_consent_xxxxx}`, the service making the call must also check that the macro name contains a validvendor ID before replacing the macro. The creator of the URL should ensure these parameters are added only once, and are passed to services which are expecting them and can handle them properly.
+The service making the call must replace the macros with appropriate values described in the table below. For macro `${gdpr_consent_xxxxx}`, the service making the call must also check that the macro name contains a validVendor ID before replacing the macro. The creator of the URL should ensure these parameters are added only once, and are passed to services which are expecting them and can handle them properly.
 
 
 <table>
@@ -318,7 +318,7 @@ The service making the call must replace the macros with appropriate values desc
    </td>
    <td><code>0</code> / <code>1</code>
    </td>
-   <td><code>0</code>=GDPR does not apply <code>1</code>=GDPR applies If not present, callee should do geoIP lookup, and GDPR applies for EU IP addresses
+   <td><code>0</code> GDPR does not apply <code>1</code> GDPR applies If not present, callee should do geoIP lookup, and GDPR applies for EU IP addresses
    </td>
   </tr>
   <tr>
@@ -479,17 +479,19 @@ BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA.DqFENCAmeAENCDA.OevsguAfDq
 A service-specific TC String must contain a Core TC String and may optionally contain a [Publisher TC](#publisher-purposes-transparency-and-consent) segment, but must not contain the OOB-related segments because those segments are not allowed in service-specific contexts:
 
 [ [Core String](#the-core-string) ].[ [Publisher TC](#publisher-purposes-transparency-and-consent) ]
+
 ```
 BObdrPUOevsguAfDqFENCNAAAAAmeAAA.OevsguAfDq
 ```
+
 #### The Core String
 
 The following fields are stored in big-endian format. Example values are provided in the appendix. Bit numberings are left-to-right.
 
-
 <table>
-  <tr>
-   <td><strong>TC String field name</strong>
+  <thead>
+  <tr style="background-color:#000;color:#FFF;">
+   <td><strong>Field Name</strong>
    </td>
    <td><strong>Bits</strong>
    </td>
@@ -498,6 +500,8 @@ The following fields are stored in big-endian format. Example values are provide
    <td><strong>Notes</strong>
    </td>
   </tr>
+  </thead>
+  <tbody>
   <tr>
    <td>Version
    </td>
@@ -561,7 +565,7 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>12 bits
    </td>
-   <td>Two-letter ISO639-1 language code in which the CMP UI was presented
+   <td>Two-letter [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1)language code in which the CMP UI was presented
    </td>
    <td>Each letter is encoded as 6 bits, a=0..z=25.
    </td>
@@ -591,9 +595,9 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>1 bit
    </td>
-   <td><code>0</code>=False<br /><code>1</code>=True
+   <td><code>1</code> true<br /><code>0</code> false
    </td>
-   <td>Whether the signals encoded in this TC String were from service-specific storage (True) versus ‘global’ consensu.org shared storage (False).
+   <td>Whether the signals encoded in this TC String were from service-specific storage (<code>true</code>) versus ‘global’ consensu.org shared storage (<code>false</code>).
    </td>
   </tr>
   <tr>
@@ -601,11 +605,9 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>1 bit
    </td>
-   <td>1=CMP used non-IAB standard stacks during consent gathering
-<p>
-<code>0</code>=IAB standard stacks were used
+   <td><code>1</code> CMP used non-IAB standard stacks during consent gathering<br /><code>0</code> IAB standard stacks were used
    </td>
-   <td>Setting this to 1 means that a publisher-run CMP – that is still IAB Europe registered – is using customized Stack descriptions and <span style="text-decoration:underline;">not</span> the standard stack descriptions defined in the [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf) (Appendix A section E). A CMP that services multiple publishers sets this value to <code>0</code>.
+   <td>Setting this to 1 means that a publisher-run CMP – that is still IAB Europe registered – is using customized Stack descriptions and not the standard stack descriptions defined in the <a href="http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf">Policies</a> (Appendix A section E). A CMP that services multiple publishers sets this value to <code>0</code>.
    </td>
   </tr>
   <tr>
@@ -613,13 +615,9 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>12 bits
    </td>
-   <td>One bit for each Special Feature:
-<p>
-1=Opted in
-<p>
-<code>0</code>=Not opted in
+   <td>One bit for each Special Feature:<br /><br /><code>1</code> Opted in<br /><code>0</code> Not opted in
    </td>
-   <td>The TCF [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf) designates certain Features as “special” which means a CMP must afford the user a means to opt in to their use. These “Special Features” are published and numerically identified in the Global Vendor List separately from normal Features.
+   <td>The TCF <a href="http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf">Policies</a> designates certain Features as “special” which means a CMP must afford the user a means to opt in to their use. These “Special Features” are published and numerically identified in the Global Vendor List separately from normal Features.
    </td>
   </tr>
   <tr>
@@ -629,15 +627,9 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>24 bits
    </td>
-   <td>One bit for each Purpose:
-<p>
-<code>0</code>=No Consent
-<p>
-1=Consent
+   <td>One bit for each Purpose:<br /><br /><code>1</code> Consent<br /><code>0</code> No Consent
    </td>
-   <td>The user’s consent value for each Purpose established on the legal basis of consent.
-<p>
-The Purposes are numerically identified and published in the Global Vendor List. From left to right, Purpose 1 maps to the <code>0</code> bit, purpose 24 maps to the bit at index 23. Special Purposes are a different ID space and not included in  this field.
+   <td>The user’s consent value for each Purpose established on the legal basis of consent.<br/><br />The Purposes are numerically identified and published in the Global Vendor List. From left to right, Purpose 1 maps to the <code>0</code>th bit, purpose 24 maps to the bit at index 23. Special Purposes are a different ID space and not included in this field.
    </td>
   </tr>
   <tr>
@@ -645,19 +637,15 @@ The Purposes are numerically identified and published in the Global Vendor List.
    </td>
    <td>24 bits
    </td>
-   <td>One bit for each Purpose:
-<p>
-<code>0</code>=legitimate interest was NOT established or it was established but user excercised their “Right to Object” to the Purpose
-<p>
-1= legitimate interest established
+   <td>One bit for each Purpose:<br /><code>1</code> legitimate interest established<br /><br /><code>0</code> legitimate interest was <u><strong>NOT</strong></u> established or it was established but user excercised their “Right to Object” to the Purpose
    </td>
    <td>The Purpose’s transparency requirements are met for each Purposeon the legal basis of legitimate interest and the user has not exercised their “Right to Object” to that Purpose.
 <p>
 By default or if the user has exercised their “Right to Object” to a Purpose, the corresponding bit for that Purpose is set to <code>0</code>. From left to right, Purpose 1 maps to the 0th bit, purpose 24 maps to the bit at index 23. Special Purposes are a different ID space and not included in this field.
    </td>
   </tr>
-  <tr>
-   <td colspan="3" ><strong>Specific Jurisdiction Disclosures</strong>
+  <tr style="background-color:#000;color:#FFF;">
+   <td colspan="4" ><strong>Specific Jurisdiction Disclosures</strong>
    </td>
    <td>
    </td>
@@ -667,9 +655,7 @@ By default or if the user has exercised their “Right to Object” to a Purpose
    </td>
    <td>1 bit
    </td>
-   <td>0=Purpose 1 was disclosed commonly as consent as expected by the [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf).
-<p>
-1=Purpose 1 was NOT disclosed at all.
+   <td><code>1</code> Purpose 1 was NOT disclosed at all.<br /><br /><code>0</code> Purpose 1 was disclosed commonly as consent as expected by the <a href="http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf">Policies</a>.
    </td>
    <td>CMPs can use the PublisherCC field to indicate the legal jurisdiction the publisher is under to help vendors determine whether the vendor needs consent for Purpose 1.
 <p>
@@ -688,8 +674,8 @@ In a globally-scoped TC string, this field must always have a value of 0. When a
 Each letter is encoded as 6 bits, a=0..z=25.
    </td>
   </tr>
-  <tr>
-   <td colspan="2" ><strong>Vendor Consent Section</strong>
+  <tr style="background-color:#000;color:#FFF;">
+   <td colspan="4" ><strong>Vendor Consent Section</strong>
    </td>
    <td>
    </td>
@@ -711,21 +697,18 @@ Each letter is encoded as 6 bits, a=0..z=25.
    </td>
    <td>1 bit
    </td>
-   <td>0=BitField
-<p>
-1=Range
+   <td>
+    <code>1</code> Range<br />
+    <code>0</code> BitField
    </td>
-   <td>The encoding scheme used to encode the IDs in the section – Either a BitFieldSection or RangeSection follows. Encoding logic should choose the encoding scheme that results in the smaller output size for a given set.
+   </td>
+   <td>The encoding scheme used to encode the IDs in the section – Either a BitField Section or Range Section follows. Encoding logic should choose the encoding scheme that results in the smaller output size for a given set.
    </td>
   </tr>
-  <tr>
-   <td><strong>Bit Field Section</strong>
+  <tr style="background-color:#999;">
+   <td colspan="2"><strong>BitField Section</strong>
    </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td><strong>Encodes one consent bit per Vendor ID</strong>
+   <td colspan="2"><strong>Encodes one consent bit per Vendor ID</strong>
    </td>
   </tr>
   <tr>
@@ -733,18 +716,12 @@ Each letter is encoded as 6 bits, a=0..z=25.
    </td>
    <td>MaxVendorId bits
    </td>
-   <td>One bit for each Vendor:
-<p>
-0=No Consent
-<p>
-1=Consent
+   <td>One bit for each Vendor:<br /><br /><code>1</code> Consent<br /><code>0</code> No Consent
    </td>
-   <td>The consent value for each Vendor ID from 1 to MaxVendorId where index 0 is Vendor ID 1.
-<p>
-Set the bit corresponding to a given vendor to 1 if the user has consented to this vendor processing their data
+   <td>The consent value for each Vendor ID from <code>1</code> to MaxVendorId where index <code>0</code> is Vendor ID <code>1</code>.<br /><br />Set the bit corresponding to a given vendor to <code>1</code> if the user has consented to this vendor processing their data
    </td>
   </tr>
-  <tr>
+  <tr style="background-color:#999;">
    <td><strong>Range Section</strong>
    </td>
    <td>
@@ -759,15 +736,13 @@ Set the bit corresponding to a given vendor to 1 if the user has consented to th
    </td>
    <td>12 bits
    </td>
-   <td>Number of RangeEntry sections to follow
-   </td>
-   <td>
+   <td colspan="2">Number of RangeEntry sections to follow
    </td>
   </tr>
-  <tr>
-   <td colspan="3" >RangeEntry (repeated NumEntries times)
+  <tr style="border-top:5px solid black;">
+   <td colspan="2">RangeEntry (repeated NumEntries times)
    </td>
-   <td>A single or range of Vendor ID(s) who have received consent. If a vendor ID is not within the bounds of the ranges then the vendor is assumed to have “No Consent”.
+   <td colspan="2">A single or range of Vendor ID(s) who have received consent. If a Vendor ID is not within the bounds of the ranges then the vendor is assumed to have “No Consent”.
    </td>
   </tr>
   <tr>
@@ -775,9 +750,11 @@ Set the bit corresponding to a given vendor to 1 if the user has consented to th
    </td>
    <td>1 bit
    </td>
-   <td>0=Single Vendor ID 1=Vendor ID range
+   <td>
+    <code>1</code> Vendor ID range<br />
+    <code>0</code> Single Vendor ID
    </td>
-   <td>If more than one vendor ID is included in this RangeEntry then this describes a range of vendor IDs and this value is 1.  If only one vendor ID is included then the value is 0.
+   <td>If more than one Vendor ID is included in this RangeEntry then this describes a range of Vendor IDs and this value is 1.  If only one Vendor ID is included then the value is 0.
    </td>
   </tr>
   <tr>
@@ -785,9 +762,9 @@ Set the bit corresponding to a given vendor to 1 if the user has consented to th
    </td>
    <td>16 bits
    </td>
-   <td>The first ID of an inclusive contiguous ascending-order series of vendor IDs even if the series is only a cardinality of 1.
+   <td>The first ID of an inclusive contiguous ascending-order series of Vendor IDs even if the series is only a cardinality of 1.
    </td>
-   <td>This is the first or only vendor ID with consent in this Range Entry.
+   <td>This is the first or only Vendor ID with consent in this RangeEntry.
    </td>
   </tr>
   <tr>
@@ -797,15 +774,15 @@ Set the bit corresponding to a given vendor to 1 if the user has consented to th
    </td>
    <td>The last ID of the inclusive contiguous ascending-order series of Vendor IDs started with StartOrOnlyVendorId but only if that series has a cardinality greater than 1, otherwise this field is omitted.
    </td>
-   <td>The end of the series of Vendor IDs – this is omitted if IsARange=0.
+   <td>The end of the series of Vendor IDs – this is omitted if <code>IsARange=0</code>.
    </td>
   </tr>
-  <tr>
+  <tr style="border-bottom:5px solid black;border-top:2px solid #999;">
    <td colspan="4" ><strong>Repeated RangeEntry sections to NumEntries...</strong>
    </td>
   </tr>
-  <tr>
-   <td colspan="3" ><strong>Vendor Legitimate Interest Section</strong>
+  <tr style="background-color:#000;color:#FFF;">
+   <td colspan="4" ><strong>Vendor Legitimate Interest Section</strong>
    </td>
    <td>
    </td>
@@ -825,21 +802,18 @@ Set the bit corresponding to a given vendor to 1 if the user has consented to th
    </td>
    <td>1 bit
    </td>
-   <td>0=BitField
-<p>
-1=Range
+   <td>
+    <code>1</code> Range<br />
+    <code>0</code> BitField
    </td>
-   <td>The encoding scheme used to encode the IDs in the section – Either a BitFieldSection or RangeSection follows. Encoding logic should encode with the encoding scheme that results in the smaller output size for a given set.
+   <td>The encoding scheme used to encode the IDs in the section – Either a BitField Section or Range Section follows. Encoding logic should encode with the encoding scheme that results in the smaller output size for a given set.
    </td>
   </tr>
   <tr>
-   <td><strong>BitFieldSection</strong>
+  <tr style="background-color:#999;">
+   <td colspan="2"><strong>BitField Section</strong>
    </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td><strong>Encodes one legitimate interest bit per VendorId</strong>
+   <td colspan="2"><strong>Encodes one legitimate interest bit per Vendor ID</strong>
    </td>
   </tr>
   <tr>
@@ -847,22 +821,19 @@ Set the bit corresponding to a given vendor to 1 if the user has consented to th
    </td>
    <td>MaxVendorId bits
    </td>
-   <td>One bit for each Vendor:
+   <td><p>One bit for each Vendor:
 <p>
-0=Legitimate Interest not established or the user exercised their “Right to Object”
-<p>
-1=Legitimate Interest established
+<code>1</code> Legitimate Interest established<br /><code>0</code> Legitimate Interest not established or the user exercised their “Right to Object”
    </td>
-   <td>The legitimate interest value for each Vendor ID from 1 to MaxVendorId where index 0 is vendor ID 1.
+   <td>The legitimate interest value for each Vendor ID from <code>1</code> to MaxVendorId where index <code>0</code> is Vendor ID <code>1</code>.
 <p>
-Set the bit corresponding to a given vendor to 1 if the CMP has established transparency for a vendor's legitimate interest disclosures.
+Set the bit corresponding to a given vendor to <code>1</code> if the CMP has established transparency for a vendor's legitimate interest disclosures.
 <p>
- \
-If a user exercises their “Right To Object” to a vendor’s processing based on a legitimate interest, then that vendor’s bit must be set to 0.
+If a user exercises their “Right To Object” to a vendor’s processing based on a legitimate interest, then that vendor’s bit must be set to <code>0</code>.
    </td>
   </tr>
-  <tr>
-   <td colspan="2" ><strong>RangeSection</strong>
+  <tr style="background-color:#999;">
+   <td colspan="2" ><strong>Range Section</strong>
    </td>
    <td colspan="2" ><strong>Encodes range groups of Vendor IDs who have established their legitimate interest disclosures with a user</strong>
    </td>
@@ -872,15 +843,13 @@ If a user exercises their “Right To Object” to a vendor’s processing based
    </td>
    <td>12 bits
    </td>
-   <td>Number of RangeEntry sections to follow
-   </td>
-   <td>
+   <td colspan="2">Number of RangeEntry sections to follow
    </td>
   </tr>
-  <tr>
-   <td colspan="3" >RangeEntry (repeated NumEntries times)
+  <tr style="border-top:5px solid black;">
+   <td colspan="2">RangeEntry (repeated NumEntries times)
    </td>
-   <td>A single or range of Vendor ID(s) who have established transparency for their legitimate interest disclosures with the user.  If a vendor ID is not within the bounds of the ranges then they have not established that transparency.
+   <td colspan="2">A single or range of Vendor ID(s) who have established transparency for their legitimate interest disclosures with the user.  If a Vendor ID is not within the bounds of the ranges then they have not established that transparency.
    </td>
   </tr>
   <tr>
@@ -888,11 +857,11 @@ If a user exercises their “Right To Object” to a vendor’s processing based
    </td>
    <td>1 bit
    </td>
-   <td>0=Single Vendor ID
-<p>
-1=Vendor ID range
+   <td>
+    <code>1</code> Vendor ID range<br />
+    <code>0</code> Single Vendor ID
    </td>
-   <td>If more than one vendor ID is included in this RangeEntry then this describes a range of vendor IDs and this value is 1.  If only one vendor ID is included then the value is 0.
+   <td>If more than one Vendor ID is included in this RangeEntry then this describes a range of Vendor IDs and this value is <code>1</code>.  If only one Vendor ID is included then the value is <code>0</code>.
    </td>
   </tr>
   <tr>
@@ -902,7 +871,7 @@ If a user exercises their “Right To Object” to a vendor’s processing based
    </td>
    <td>The first ID of an inclusive contiguous ascending-order series of Vendor IDs even if the series is only a cardinality of 1.
    </td>
-   <td>This is the first or only Vendor ID with legitimate interest disclosures established in this Range Entry.
+   <td>This is the first or only Vendor ID with legitimate interest disclosures established in this RangeEntry.
    </td>
   </tr>
   <tr>
@@ -910,36 +879,30 @@ If a user exercises their “Right To Object” to a vendor’s processing based
    </td>
    <td>16 bits
    </td>
-   <td>The last ID of the inclusive contiguous ascending-order series of vendor IDs started with StartOrOnlyVendorId but only if that series has a cardinality greater than 1, otherwise this field is omitted.
+   <td>The last ID of the inclusive contiguous ascending-order series of Vendor IDs started with StartOrOnlyVendorId but only if that series has a cardinality greater than <code>1</code>, otherwise this field is omitted.
    </td>
-   <td>The end of the series of Vendor IDs – this is omitted if IsARange=0.
+   <td>The end of the series of Vendor IDs – this is omitted if <code>IsARange=0</code>.
    </td>
   </tr>
-  <tr>
+  <tr style="border-bottom:5px solid black;border-top:2px solid #999;">
    <td colspan="4" ><strong>Repeated RangeEntry sections to NumEntries...</strong>
    </td>
   </tr>
-  <tr>
-   <td><strong>Publisher Restrictions Section</strong>
+  <tr style="background-color:#000;color:#FFF;">
+   <td ><strong>Publisher Restrictions Section</strong>
    </td>
-   <td>
-   </td>
-   <td colspan="2" ><strong>The content of this section is optional EXCEPT for NumPubRestrictions. Encodes any number of single or range restriction entries</strong>
+   <td colspan="3" ><strong>The content of this section is optional EXCEPT for NumPubRestrictions. Encodes any number of single or range restriction entries</strong>
    </td>
   </tr>
   <tr>
-   <td><strong>NumPubRestrictions</strong>
+   <td>NumPubRestrictions
    </td>
-   <td><strong>12 bits</strong>
+   <td>12 bits
    </td>
-   <td><strong>Number of publisher restrictions to follow. A value of 0 indicates no publisher restrictions content follows.</strong>
-   </td>
-   <td><strong>Value is required even if it is 0. </strong>
-<p>
-<strong>Number of restriction records to follow.</strong>
+   <td colspan="2">Number of restriction records to follow.<br /><br /><strong style="color:red;">Value is required</strong> even if it is <code>0</code>
    </td>
   </tr>
-  <tr>
+  <tr style="border-top:5px solid black;">
    <td colspan="3" >PubRestrictionEntry (Repeated NumPubRestrictions times)
    </td>
    <td>Each Publisher Restriction Entry is made up of three parts: Purpose ID, Restriction Type and, List of Vendor IDs under that Purpose restriction.
@@ -960,38 +923,37 @@ If a user exercises their “Right To Object” to a vendor’s processing based
    </td>
    <td>2 bits
    </td>
-   <td>Enum
-<p>
- \
-0=Purpose Flatly Not Allowed by Publisher (regardless of Vendor declarations)
-<p>
-1=Require Consent (if Vendor has declared the Purpose IDs legal basis as Legitimate Interest and flexible)
-<p>
-2=Require Legitimate Interest (if Vendor has declared the Purpose IDs legal basis as Consent and flexible)
-<p>
-3=UNDEFINED (not used)
+   <td>
+      <p>
+      Enum
+      <p>
+      <code>1</code> Require Consent (if Vendor has declared the Purpose IDs legal basis as Legitimate Interest and flexible)
+      <p>
+      <code>0</code> Purpose Flatly Not Allowed by Publisher (regardless of Vendor declarations)
+      <p>
+      <code>2</code> Require Legitimate Interest (if Vendor has declared the Purpose IDs legal basis as Consent and flexible)
+      <p>
+      <code>3</code> UNDEFINED (not used)
    </td>
-   <td>Vendors must always respect a 0 (Not Allowed) regardless of whether or not they have not decalred that Purpose to be “flexible”.  Values 1 and 2 are in accordance with a vendors declared flexibility.  Eg. if a vendor has Purpose 2 declared as Legitimate Interest but also declares that Purpose as flexible and this field is set to 1, they must then check for the “consent” signal in the Vendor Consents section to make a determination on whether they have the legal basis for processing user data under that Purpose.
+   <td>Vendors must always respect a <code>0</code> (Not Allowed) regardless of whether or not they have not decalred that Purpose to be “flexible”.  Values <code>1</code> and <code>2</code> are in accordance with a vendors declared flexibility.  Eg. if a vendor has Purpose 2 declared as Legitimate Interest but also declares that Purpose as flexible and this field is set to <code>1</code>, they must then check for the “consent” signal in the VendorConsents section to make a determination on whether they have the legal basis for processing user data under that Purpose.
 <p>
-If a vendor has not declared a Purpose flexible and this value is 1 or 2 they may ignore the signal.
+If a vendor has not declared a Purpose flexible and this value is <code>1</code> or <code>2</code> they may ignore the signal.
 <p>
-<strong>Note:</strong> Purpose 1 is always required to be registered as a consent purpose and can not be flexible per [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf).
+<strong>Note:</strong> Purpose 1 is always required to be registered as a consent purpose and can not be flexible per <a href="http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf">Policies</a>.
    </td>
   </tr>
-  <tr>
+  <tr style="border-top:2px solid black;">
    <td>NumEntries
    </td>
    <td>12 bits
    </td>
-   <td>Number of RangeEntry sections to follow.
-   </td>
-   <td>
+   <td colspan="2">Number of RangeEntry sections to follow.
    </td>
   </tr>
-  <tr>
-   <td colspan="3" >RangeEntry (repeated NumEntries times)
+  <tr style="border-top:5px double black;">
+   <td colspan="2">RangeEntry (repeated NumEntries times)
    </td>
-   <td>A single or range of Vendor ID(s) who the publisher has designated as restricted under the Purpose ID in this PubRestrictionsEntry.
+   <td colspan="2">A single or range of Vendor ID(s) who the publisher has designated as restricted under the Purpose ID in this PubRestrictionsEntry.
    </td>
   </tr>
   <tr>
@@ -1000,11 +962,11 @@ IsARange
    </td>
    <td>1 bit
    </td>
-   <td>0=Single Vendor ID
-<p>
-1=Vendor ID range
+   <td>
+    <code>1</code> Vendor ID range<br />
+    <code>0</code> Single Vendor ID
    </td>
-   <td>If more than one Vendor ID is included in this RangeEntry then this describes a range of vendor IDs and this value is 1.  If only one vendor ID is included then the value is 0.
+   <td>If more than one Vendor ID is included in this RangeEntry then this describes a range of Vendor IDs and this value is <code>1</code>.  If only one Vendor ID is included then the value is <code>0</code>.
    </td>
   </tr>
   <tr>
@@ -1013,9 +975,9 @@ StartOrOnlyVendorId
    </td>
    <td>16 bits
    </td>
-   <td>The first ID of an inclusive contiguous ascending-order series of vendor IDs even if the series is only a cardinality of 1.
+   <td>The first ID of an inclusive contiguous ascending-order series of Vendor IDs even if the series is only a cardinality of 1.
    </td>
-   <td>This is the first or only vendor ID with this restriction in this Range Entry
+   <td>This is the first or only Vendor ID with this restriction in this RangeEntry
    </td>
   </tr>
   <tr>
@@ -1023,122 +985,97 @@ StartOrOnlyVendorId
    </td>
    <td>16 bits
    </td>
-   <td>The last ID of the inclusive contiguous ascending-order series of vendor IDs started with StartOrOnlyVendorId but only if that series has a cardinality greater than 1, otherwise this field is omitted.
+   <td>The last ID of the inclusive contiguous ascending-order series of Vendor IDs started with StartOrOnlyVendorId but only if that series has a cardinality greater than 1, otherwise this field is omitted.
    </td>
-   <td>The end of the series of Vendor IDs – this is omitted if IsARange=0.
+   <td>The end of the series of Vendor IDs – this is omitted if <code>IsARange=0</code>.
    </td>
   </tr>
-  <tr>
+  <tr style="border-bottom:5px double black;border-top:2px solid #999;">
    <td colspan="4" ><strong>Repeated RangeEntry sections to NumEntries...</strong>
    </td>
   </tr>
-  <tr>
+  <tr style="border-bottom:5px solid black;">
    <td colspan="4" ><strong>Repeated PubRestrictionsEntry sections to NumPubRestrictions...</strong>
    </td>
   </tr>
+  </tbody>
 </table>
 
 
 
 #### Signaling OOB in the TC String
 
-On occasion, legal bases for processing user data are achieved outside of the TCF. This would be considered an out-of-band (OOB) legal basis. To signal whether using an OOB legal basis is allowed requires: \
+On occasion, legal bases for processing user data are achieved outside of the TCF. This would be considered an out-of-band (OOB) legal basis. To signal whether using an OOB legal basis is allowed requires:
 
-
-
-
-*   An indication that some CMP has, at some time, disclosed the vendor in a global context to the user inthe [DisclosedVendors](#disclosed-vendors-oob) segment
+*   An indication that some CMP has, at some time, disclosed the vendor in a global context to the user inthe _**[DisclosedVendors](#disclosed-vendors-oob)**_ segment
 *   The use of a global-context TC String
 *   The publisher to allow vendors, in general, to use OOB legal bases
-*   Optionally, a list of specific vendors allowed to use OOB legal bases in the [AllowedVendors](#allowed-vendors-oob) segment
+*   Optionally, a list of specific vendors allowed to use OOB legal bases in the _**[AllowedVendors](#allowed-vendors-oob)**_ segment
 
-The _[DisclosedVendors](#disclosed-vendors-oob) _segment of a TC String provides a list of vendors that have been disclosed to a user; it is created and stored in a global context for all CMPs to share across the web. The existence of this segment as a member of a TC String, when signaling, implies that the publisher supportsOOB legal bases. Conversely, If a publisher does not support OOB legal bases the segment shall be omitted when signaling.  Regardless of publisher support, a CMP shall still update the segment with any new Vendor IDs disclosed and save the updated TC String back to the global context when the CMP user interface completes its interaction with the user.
+The _**[DisclosedVendors](#disclosed-vendors-oob)**_ segment of a TC String provides a list of vendors that have been disclosed to a user; it is created and stored in a global context for all CMPs to share across the web. The existence of this segment as a member of a TC String, when signaling, implies that the publisher supportsOOB legal bases. Conversely, If a publisher does not support OOB legal bases the segment shall be omitted when signaling.  Regardless of publisher support, a CMP shall still update the segment with any new Vendor IDs disclosed and save the updated TC String back to the global context when the CMP user interface completes its interaction with the user.
 
-If a publisher supports OOB legal bases, but only for select vendors, a CMP shall create an [AllowedVendors](#allowed-vendors-oob) segment that reflects the vendors the publisher allows to operate under OOB legal bases.  When a TC String is requested from the CMP API it shall include both the [AllowedVendors](#allowed-vendors-oob) and [DisclosedVendors](#disclosed-vendors-oob) segments.  However, when a TC String is stored, an [AllowedVendors](#allowed-vendors-oob) segment must never be saved to the global context as this is a publisher-specific setting and does not apply web-wide. If a CMP encouters a TC String with an [AllowedVendors](#allowed-vendors-oob) segment in the global context it must disregard it, not include it in responses from the CMP API, and of course omit it when re-saving.
+If a publisher supports OOB legal bases, but only for select vendors, a CMP shall create an _**[AllowedVendors](#allowed-vendors-oob)**_ segment that reflects the vendors the publisher allows to operate under OOB legal bases.  When a TC String is requested from the CMP API it shall include both the _**[AllowedVendors](#allowed-vendors-oob)**_ and _**[DisclosedVendors](#disclosed-vendors-oob)**_ segments.  However, when a TC String is stored, an _**[AllowedVendors](#allowed-vendors-oob)**_ segment must never be saved to the global context as this is a publisher-specific setting and does not apply web-wide. If a CMP encouters a TC String with an _**[AllowedVendors](#allowed-vendors-oob)**_ segment in the global context it must disregard it, not include it in responses from the CMP API, and of course omit it when re-saving.
 
 The following three examples demonstrate how to handle an OOB signal in the TC String.
 
+**Example 1: A Publisher Does <span style="text-decoration:underline;">Not</span> Support OOB Legal Bases**
 
-    **Example 1: A Publisher Does <span style="text-decoration:underline;">Not</span> Support OOB Legal Bases**
-
-
-    The CMP reads a TC String from global context storage and it contains a [DisclosedVendors](#disclosed-vendors-oob) segment:
+The CMP reads a TC String from global context storage and it contains a _**[DisclosedVendors](#disclosed-vendors-oob)**_ segment:
 
 
+[ _**[Core](#the-core-string)**_ ].[ _**[DisclosedVendors](#disclosed-vendors-oob)**_ ]
 ```
-        [ Core ][ [DisclosedVendors](#disclosed-vendors-oob) ]
-        BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA
+BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA
 ```
+Because the publisher does not support OOB legal bases, the dot-delimited _**[DisclosedVendors](#disclosed-vendors-oob)**_ segment at the end of the TC String is removed when requested form the CMP API:
 
-
-
-    Because the publisher does not support OOB legal bases, the dot-delimited [DisclosedVendors](#disclosed-vendors-oob) segment at the end of the TC String is removed when requested form the CMP API:
-
-
+[ _**[Core](#the-core-string)**_ ]
 ```
-    [ Core ]
-        BObdrPUOevsguAfDqFENCNAAAAAmeAAA
+BObdrPUOevsguAfDqFENCNAAAAAmeAAA
 ```
 
+**Example 2: A Publisher Supports OOB Legal Bases**
 
+The CMP reads a TC String from global context storage and it contains a _**[DisclosedVendors](#disclosed-vendors-oob)**_ segment (same as Example 1):
 
-
-
-
-    **Example 2: A Publisher Supports OOB Legal Bases**
-
-
-    The CMP reads a TC String from global context storage and it contains a [DisclosedVendors](#disclosed-vendors-oob) segment (same as Example 1):
-
-
+[ _**[Core](#the-core-string)**_ ].[ _**[DisclosedVendors](#disclosed-vendors-oob)**_ ]
 ```
-        [ Core ][ [DisclosedVendors](#disclosed-vendors-oob) ]
-        BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA
+BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA
 ```
+Since the publisher supports OOB legal bases for any vendor that uses it, the TC String, when surfaced through the CMP API, is unchanged from storage – it includes the _**[DisclosedVendors](#disclosed-vendors-oob)**_ segment:
 
-
-
-    Since the publisher supports OOB legal bases for any vendor that uses it, the TC String, when surfaced through the CMP API, is unchanged from storage – it includes the [DisclosedVendors](#disclosed-vendors-oob) segment:
-
-
+[ _**[Core](#the-core-string)**_ ].[ _**[DisclosedVendors](#disclosed-vendors-oob)**_ ]
 ```
-        [ Core ][ [DisclosedVendors](#disclosed-vendors-oob) ]
-        BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA
+BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA
 ```
 
+**Example 3: A Publisher Supports OOB Legal Bases for Only Select Vendors**
+
+The CMP reads a TC String from global context storage and it contains a _**[DisclosedVendors](#disclosed-vendors-oob)**_ segment (same as Example 1 & Example 2):
 
 
-    **Example 3: A Publisher Supports OOB Legal Bases for Only Select Vendors**
-
-
-    The CMP reads a TC String from global context storage and it contains a [DisclosedVendors](#disclosed-vendors-oob) segment (same as Example 1 & Example 2):
-
-
+[ _**[Core](#the-core-string)**_ ].[ _**[DisclosedVendors](#disclosed-vendors-oob)**_ ]
 ```
-        [ Core ][ [DisclosedVendors](#disclosed-vendors-oob) ]
-        BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA
+BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA
 ```
 
+To indicate the select vendors a publisher approves to use OOB legal bases, the CMP includes the _**[AllowedVendors](#allowed-vendors-oob)**_ segment with the TC String from the CMP API:
 
-
-    To indicate the select vendors a publisher approves to use OOB legal bases, the CMP includes the [AllowedVendors](#allowed-vendors-oob) segment with the TC String from the CMP API:
-
+[ _**[Core](#the-core-string)**_ ].[ _**[DisclosedVendors](#disclosed-vendors-oob)**_ ].[ _**[AllowedVendors](#allowed-vendors-oob)**_ ]
 
 ```
-        [ Core ][ [DisclosedVendors](#disclosed-vendors-oob) ][ [AllowedVendors](#allowed-vendors-oob) ]
-        BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA.DqFENCAmeAENCDA
+BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA.DqFENCAmeAENCDA
 ```
-
-
 
 #### Disclosed Vendors (OOB)
 
-The _[DisclosedVendors](#disclosed-vendors-oob) _is a TC String segment that signals which vendors have been disclosed to a given user by a CMP. This segment is required when saving a global-context TC String.  When a CMP updates a globally-scoped TC String, the CMP <span style="text-decoration:underline;">MUST</span> retain the existing values and only add new disclosed Vendor IDs that had not been added by other CMPs in prior interactions with this user.
+The _**DisclosedVendors**_ is a TC String segment that signals which vendors have been disclosed to a given user by a CMP. This segment is required when saving a global-context TC String.  When a CMP updates a globally-scoped TC String, the CMP <span style="text-decoration:underline;">MUST</span> retain the existing values and only add new disclosed Vendor IDs that had not been added by other CMPs in prior interactions with this user.
 
 
 <table>
-  <tr>
-   <td><strong>Disclosed Vendors Section</strong>
+  <thead>
+  <tr style="background-color:#000;color:#FFF;">
+   <td><strong>Field Name</strong>
    </td>
    <td><strong>Bits</strong>
    </td>
@@ -1147,22 +1084,26 @@ The _[DisclosedVendors](#disclosed-vendors-oob) _is a TC String segment that sig
    <td><strong>Description</strong>
    </td>
   </tr>
+  </thead>
+  <tbody>
   <tr>
    <td>SegmentType
    </td>
    <td>3 bits
    </td>
-   <td>Enum
-<p>
-0=Default - reserved for core string (does not need to be present in the core string)
-<p>
-<strong>1=OOB vendors disclosed</strong>
-<p>
-2=OOB vendors allowed
-<p>
-3=PublisherTC
+   <td>
+    <p>
+    Enum
+    <p>
+    <code>0</code> Default (<em>Core</em>)
+    <p>
+    <strong><code>1</code> <em>DisclosedVendors</em></strong>
+    <p>
+    <code>2</code> <em>AllowedVendors</em>
+    <p>
+    <code>3</code> PublisherTC
    </td>
-   <td>Disclosed Vendors segment is 1 which is ‘001’ in binary.
+   <td><strong><em>DisclosedVendors</em></strong> segment is <code>1</code> which is <code>001</code> in binary.
    </td>
   </tr>
   <tr>
@@ -1180,22 +1121,18 @@ The _[DisclosedVendors](#disclosed-vendors-oob) _is a TC String segment that sig
    </td>
    <td>1 bit
    </td>
-   <td>0=BitField
-<p>
- \
-1=Range
+   <td>
+    <code>1</code> Range<br />
+    <code>0</code> BitField
    </td>
-   <td>The encoding scheme used to encode the IDs in the section – Either a BitFieldSection or RangeSection follows. Encoding logic should choose the encoding scheme that results in the smaller output size for a given set.
+   <td>The encoding scheme used to encode the IDs in the section – Either a BitField Section or Range Section follows. Encoding logic should choose the encoding scheme that results in the smaller output size for a given set.
    </td>
   </tr>
   <tr>
-   <td><strong>BitFieldSection</strong>
+  <tr style="background-color:#999;">
+   <td colspan="2"><strong>BitField Section</strong>
    </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td><strong>Encodes one disclosed vendor bit per Vendor ID</strong>
+   <td colspan="2"><strong>Encodes one disclosed vendor bit per Vendor ID</strong>
    </td>
   </tr>
   <tr>
@@ -1203,22 +1140,22 @@ The _[DisclosedVendors](#disclosed-vendors-oob) _is a TC String segment that sig
    </td>
    <td>MaxVendorId bits
    </td>
-   <td>One bit for each vendor
-<p>
- \
-0=Not Disclosed
-<p>
-1=Disclosed
+   <td>
+      <p>
+      One bit for each vendor
+      <p>
+      <code>1</code> Disclosed<br />
+      <code>0</code> Not Disclosed
    </td>
-   <td>The value for each Vendor ID from 1 to MaxVendorId.
-<p>
-Set the bit corresponding to a given vendor to 1 if the CMP has disclosed the vendor in the UI.
+   <td>The value for each Vendor ID from <code>1</code> to MaxVendorId.
+      <p>
+      Set the bit corresponding to a given vendor to <code>1</code> if the CMP has disclosed the vendor in the UI.
    </td>
   </tr>
-  <tr>
-   <td colspan="2" ><strong>RangeSection</strong>
+  <tr style="background-color:#999;">
+   <td colspan="2" ><strong>Range Section</strong>
    </td>
-   <td colspan="2" ><strong>Encodes range groups of vendor IDs who have been disclosed to a user</strong>
+   <td colspan="2" ><strong>Encodes range groups of Vendor IDs who have been disclosed to a user</strong>
    </td>
   </tr>
   <tr>
@@ -1226,27 +1163,25 @@ Set the bit corresponding to a given vendor to 1 if the CMP has disclosed the ve
    </td>
    <td>12 bits
    </td>
-   <td>Number of ReangeEntry sections to follow
+   <td colspan="2">Number of ReangeEntry sections to follow
    </td>
-   <td>
+  </tr>
+  <tr style="border-top:5px solid black;">
+   <td colspan="2">RangeEntry (repeated NumEntries times)
+   </td>
+   <td colspan="2">A single or range of Vendor ID(s) of Vendor(s) who were disclosed in a CMP UI to the user. If a Vendor ID is not within the bounds of the ranges then they were not disclosed to the user.
    </td>
   </tr>
   <tr>
-   <td colspan="3" >RangeEntry (repeated NumEntries times)
-   </td>
-   <td>A single or range of Vendor ID(s) of Vendor(s) who were disclosed in a CMP UI to the user. If a Vendor ID is not within the bounds of the ranges then they were not disclosed to the user.
-   </td>
-  </tr>
-  <tr>
-   <td>IsARangeRange
+   <td>IsARange
    </td>
    <td>1 bit
    </td>
-   <td>0=Single Vendor ID
-<p>
-1=Vendor ID range
+   <td>
+    <code>1</code> Vendor ID range<br />
+    <code>0</code> Single Vendor ID
    </td>
-   <td>If more than one Vendor ID is included in this RangeEntry then this describes a range of Vendor IDs and this value is 1.  If only one Vendor ID is included then the value is 0.
+   <td>If more than one Vendor ID is included in this RangeEntry then this describes a range of Vendor IDs and this value is 1.  If only one Vendor ID is included then the value is <code>0</code>.
    </td>
   </tr>
   <tr>
@@ -1266,22 +1201,20 @@ Set the bit corresponding to a given vendor to 1 if the CMP has disclosed the ve
    </td>
    <td>The last ID of the inclusive contiguous ascending-order series of Vendor IDs started with StartOrOnlyVendorId but only if that series has a cardinality greater than 1, otherwise this field is omitted.
    </td>
-   <td>The end of the series of Vendor IDs – this is omitted if IsARange=0.
+   <td>The end of the series of Vendor IDs – this is omitted if <code>IsARange=0</code>.
    </td>
   </tr>
+  </tbody>
 </table>
-
-
 
 #### Allowed Vendors (OOB)
 
 Signals which vendors the publisher permits to use OOB legal bases.
 
-
 <table>
-  <tr>
-   <td><strong>OOBVendors \
-Section </strong>
+  <thead>
+  <tr style="background-color:#000;color:#FFF;">
+   <td><strong>Field Name</strong>
    </td>
    <td><strong>Bits</strong>
    </td>
@@ -1290,22 +1223,26 @@ Section </strong>
    <td><strong>Description</strong>
    </td>
   </tr>
+  </thead>
+  <tbody>
   <tr>
    <td>SegmentType
    </td>
    <td>3 bits
    </td>
-   <td>Enum
-<p>
-0=default - reserved for core string (does not need to be present in the core string)
-<p>
-1=OOB disclosed vendors
-<p>
-<strong>2=OOB allowed vendors</strong>
-<p>
-3=PublisherTC
+   <td>
+    <p>
+    Enum
+    <p>
+    <code>0</code> Default (<em>Core</em>)
+    <p>
+    <code>1</code> <em>DisclosedVendors</em>
+    <p>
+    <strong><code>2</code> <em>AllowedVendors</em></strong>
+    <p>
+    <code>3</code> PublisherTC
    </td>
-   <td>OOB Allowed Vendors segment  is 2 which is  ‘010’ in binary.
+   <td>OOB AllowedVendors segment is <code>2</code> which is  <code>010</code> in binary.
    </td>
   </tr>
   <tr>
@@ -1323,22 +1260,18 @@ Section </strong>
    </td>
    <td>1 bit
    </td>
-   <td>0=BitField
-<p>
- \
-1=Range
+   <td>
+    <code>1</code> Range<br />
+    <code>0</code> BitField
    </td>
-   <td>The encoding scheme used to encode the IDs in the section – Either a BitFieldSection or RangeSection follows. Encoding logic should choose the encoding scheme that results in the smaller output size for a given set.
+   <td>The encoding scheme used to encode the IDs in the section – Either a BitField Section or Range Section follows. Encoding logic should choose the encoding scheme that results in the smaller output size for a given set.
    </td>
   </tr>
   <tr>
-   <td><strong>BitFieldSection</strong>
+  <tr style="background-color:#999;">
+   <td colspan="2"><strong>BitField Section</strong>
    </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td><strong>Encodes one allowed vendor bit per vendor ID</strong>
+   <td colspan="2"><strong>Encodes one allowed vendor bit per Vendor ID</strong>
    </td>
   </tr>
   <tr>
@@ -1346,20 +1279,20 @@ Section </strong>
    </td>
    <td>MaxVendorId bits
    </td>
-   <td>One bit for each Vendor
-<p>
- \
-0=Not Allowed
-<p>
-1=Allowed
+   <td>
+      <p>
+      One bit for each vendor
+      <p>
+      <code>1</code> Allowed<br />
+      <code>0</code> Not Allowed
    </td>
-   <td>The value for each Vendor ID from 1 to MaxVendorId.
-<p>
-Set the bit corresponding to a given vendor to 1 if the Publisher permits the vendor to use OOB legal bases.
+   <td>The value for each Vendor ID from <code>1</code> to MaxVendorId.
+    <p>
+    Set the bit corresponding to a given Vendor ID to <code>1</code> if the Publisher permits the vendor to use OOB legal bases.
    </td>
   </tr>
-  <tr>
-   <td colspan="2" ><strong>RangeSection</strong>
+  <tr style="background-color:#999;">
+   <td colspan="2" ><strong>Range Section</strong>
    </td>
    <td colspan="2" ><strong>Encodes range groups of Vendor IDs who the publisher is allowing to use an OOB legal basis</strong>
    </td>
@@ -1369,27 +1302,25 @@ Set the bit corresponding to a given vendor to 1 if the Publisher permits the ve
    </td>
    <td>12 bits
    </td>
-   <td>Number of RangeEntry sections to follow
+   <td colspan="2">Number of RangeEntry sections to follow
    </td>
-   <td>
+  </tr>
+  <tr style="border-top:5px solid black;">
+   <td colspan="2">RangeEntry (repeated NumEntries times)
+   </td>
+   <td colspan="2">A single or range of Vendor ID(s) of Vendor(s) who are allowed to use an OOB legal basis on the given publisher’s digital property. If a Vendor ID is not within the bounds of the ranges then they are not allowed to use an OOB legal basis on the given publisher’s digital property..
    </td>
   </tr>
   <tr>
-   <td colspan="3" >RangeEntry (repeated NumEntries times)
-   </td>
-   <td>A single or range of Vendor ID(s) of Vendor(s) who are allowed to use an OOB legal basis on the given publisher’s digital property. If a Vendor ID is not within the bounds of the ranges then they are not allowed to use an OOB legal basis on the given publisher’s digital property..
-   </td>
-  </tr>
-  <tr>
-   <td>IsARange[idx]
+   <td>IsARange
    </td>
    <td>1 bit
    </td>
-   <td>0=Single vendor ID
-<p>
-1=Vendor ID range
+   <td>
+    <code>1</code> Vendor ID range<br />
+    <code>0</code> Single Vendor ID
    </td>
-   <td>If more than one vendor ID is included in this RangeEntry then this describes a range of vendor IDs and this value is 1.  If only one vendor ID is included then the value is 0.
+   <td>If more than one Vendor ID is included in this RangeEntry then this describes a range of Vendor IDs and this value is 1.  If only one Vendor ID is included then the value is <code>0</code>.
    </td>
   </tr>
   <tr>
@@ -1409,9 +1340,10 @@ Set the bit corresponding to a given vendor to 1 if the Publisher permits the ve
    </td>
    <td>The last ID of the inclusive contiguous ascending-order series of Vendor IDs started with StartOrOnlyVendorId but only if that series has a cardinality greater than 1, otherwise this field is omitted.
    </td>
-   <td>The end of the series of Vendor IDs – this is omitted if IsARange=0.
+   <td>The end of the series of Vendor IDs – this is omitted if <code>IsARange=0</code>.
    </td>
   </tr>
+  </tbody>
 </table>
 
 
@@ -1420,34 +1352,41 @@ Set the bit corresponding to a given vendor to 1 if the Publisher permits the ve
 
 Publishers may need to establish transparency and consent for a set of purposes for their own data use. For example, a publisher that wants to set a frequency-capping first-party cookie should request user consent for Purpose 1 "Store and/or access information on a device" in jurisdictions where it is required.
 
-The [Publisher TC](#publisher-purposes-transparency-and-consent) segment in the TC string represents publisher purposes transparency & consent signals which is different than the other TC String segments; they are used to collect consumer purposes transparency & consent for vendors. This segment supports the standard list of purposes defined by the TCF as well as custom purposes defined by the publisher if they so choose.
+The [Publisher TC](#publisher-purposes-transparency-and-consent) segment in the TC string represents publisher purposes transparency & consent signals which is different than the other TC String segments; they are used to collect consumer purposes transparency & consent for vendors. This segment supports the standard list of purposes defined by the TCF as well as Custom Purposes defined by the publisher if they so choose.
 
 
 <table>
-  <tr>
-   <td><strong>Publisher Transparency & Consent</strong>
+  <thead>
+  <tr style="background-color:#000;color:#FFF;">
+   <td><strong>Field Name</strong>
    </td>
-   <td>
+   <td><strong>Bits</strong>
    </td>
-   <td colspan="2" ><strong>The content of this section is optional, and should only be present if the HasPublisherTC flag in the main section is 1.</strong>
+   <td><strong>Values</strong>
+   </td>
+   <td><strong>Description</strong>
    </td>
   </tr>
+  </thead>
+  <tbody>
   <tr>
    <td>SegmentType
    </td>
    <td>3 bits
    </td>
-   <td>Enum
-<p>
-0 = default - reserved for core string (does not need to be present in the core string)
-<p>
-1 = OOB disclosed vendor
-<p>
-2 = OOB allowed vendors
-<p>
-<strong>3 = PublisherTC</strong>
+   <td>
+    <p>
+    Enum
+    <p>
+    <code>0</code> Default (<em>Core</em>)
+    <p>
+    <code>1</code> <em>DisclosedVendors</em>
+    <p>
+    <code>2</code> <em>AllowedVendors</em>
+    <p>
+    <strong><code>3</code> PublisherTC</strong>
    </td>
-   <td>PublisherTC segment is 3 which is  ‘011’ in binary.
+   <td><strong><em>PublisherTC</em></strong> segment is 3 which is  <code>011</code> in binary.
    </td>
   </tr>
   <tr>
@@ -1457,13 +1396,12 @@ The [Publisher TC](#publisher-purposes-transparency-and-consent) segment in the 
    </td>
    <td>One bit for each Purpose:
 <p>
-0=No Consent
-<p>
-1=Consent
+<code>1</code> Consent<br />
+<code>0</code> No Consent
    </td>
    <td>The user’s consent value for each Purpose established on the legal basis of consent, for the publisher
 <p>
-The Purposes are numerically identified and published in the Global Vendor List. From left to right, Purpose 1 maps to the 0th bit, purpose 24 maps to the bit at index 23.
+The Purposes are numerically identified and published in the Global Vendor List. From left to right, Purpose 1 maps to the <code>0</code>th bit, purpose 24 maps to the bit at index 23.
    </td>
   </tr>
   <tr>
@@ -1471,15 +1409,10 @@ The Purposes are numerically identified and published in the Global Vendor List.
    </td>
    <td>24 bits
    </td>
-   <td>One bit for each Purpose:
-<p>
-0=legitimate interest NOT established
-<p>
-1=legitimate interest established
-   </td>
+   <td>One bit for each Purpose:<br /><code>1</code> legitimate interest established<br /><br /><code>0</code> legitimate interest was <u><strong>NOT</strong></u> established or it was established but user excercised their “Right to Object” to the Purpose
    <td>The Purpose’s transparency requirements are met for each Purpose established on the legal basis of legitimate interest and the user has not exercised their “Right to Object” to that Purpose.
 <p>
-By default or if the user has exercised their “Right to Object to a Purpose, the corresponding bit for that purpose is set to 0. From left to right, Purpose 1 maps to the 0th bit, purpose 24 maps to the bit at index 23.
+By default or if the user has exercised their “Right to Object to a Purpose, the corresponding bit for that purpose is set to <code>0</code>. From left to right, Purpose 1 maps to the <code>0</code>th bit, purpose 24 maps to the bit at index 23.
    </td>
   </tr>
   <tr>
@@ -1487,11 +1420,11 @@ By default or if the user has exercised their “Right to Object to a Purpose, t
    </td>
    <td>6 bits
    </td>
-   <td>The number of custom purposes.
+   <td>The number of Custom Purposes.
    </td>
-   <td>Custom purpose IDs are numbered 1 to NumberCustomPurposes. Custom purposes will be definedby the publisher and displayed to a user in a CMP user interface.
-<p>
-If the publisher does not use any custom purposes, this field is set to 0 and the following two fields will be omitted.
+   <td>Custom purpose IDs are numbered <code>1</code> to NumberCustomPurposes. Custom purposes will be defined by the publisher and displayed to a user in a CMP user interface.
+    <p>
+    If the publisher does not use any Custom Purposes, this field is set to <code>0</code> and the following two fields will be omitted.
    </td>
   </tr>
   <tr>
@@ -1499,11 +1432,11 @@ If the publisher does not use any custom purposes, this field is set to 0 and th
    </td>
    <td>NumCustomPurposes
    </td>
-   <td>One bit for each custom purpose
+   <td>One bit for each Custom Purpose:
 <p>
-0=No Consent
-<p>
-1=Consent
+<code>1</code> Consent<br />
+<code>0</code> No Consent
+   </td>
    </td>
    <td>The consent value for each CustomPurposeId from 1 to NumberCustomPurposes
    </td>
@@ -1513,34 +1446,22 @@ If the publisher does not use any custom purposes, this field is set to 0 and th
    </td>
    <td>NumCustomPurposes
    </td>
-   <td>One bit for each custom purpose Legitimate Interest establishment
-<p>
-0=Legitimate Interest not established or established or the user exercised their “Right to Object”
-<p>
-
-<p>
-1=Legitimate Interest established
-   </td>
-   <td>The legitimate Interest disclosure establishment value for each CustomPurposeId from 1 to NumberCustomPurposes
+   <td>One bit for each Custom Purpose:<br /><code>1</code> legitimate interest established<br /><br /><code>0</code> legitimate interest was <u><strong>NOT</strong></u> established or it was established but user excercised their “Right to Object” to the Custom Purpose
+   <td>The legitimate Interest disclosure establishment value for each CustomPurposeId from <code>1</code> to NumberCustomPurposes
    </td>
   </tr>
+</tbody>
 </table>
-
-
 
 ## The Global Vendor List
 
 The Global Vendor List (GVL) is a technical document that CMPs download from a domain managed and published by IAB Europe. It lists all registered and approved Vendors, as well as standard Purposes, Special Purposes, Features, Special Features and Stacks. The information stored in the GVL is used for determining what legal disclosures must be made to the user.
 
-
 ### I’m a vendor, how do I get added to the Global Vendor List?
 
 The registration process is described here: [https://iabeurope.eu/tcf](https://iabeurope.eu/tcf)
 
-
 ### What is contained in the Global Vendor List?
-
-
 
 *   A Global Vendor List Specification Version
 *   A Global Vendor List version
@@ -1560,7 +1481,7 @@ The registration process is described here: [https://iabeurope.eu/tcf](https://i
     *   List of Special Purposes to transparently disclose as their legitimate interest that a user has no right to object.
     *   List of Features they use across Purposes.
     *   GDPR/privacy policy page URL.
-    *   HTTP “overflow” options which includes a GET request maximum size in kilobytes to help diagnose problems with TC String passing as well as limit oversized strings.
+    *   HTTP “overflow” options which includes a <code>GET</code> request maximum size in kilobytes to help diagnose problems with TC String passing as well as limit oversized strings.
 
 
 ### Where can I access the Global Vendor List?
@@ -1579,7 +1500,6 @@ Where ‘vendor-list-version’ corresponds to the ‘vendorListVersion’ prope
 
 Previous versions of the GVL may only be used in cases when the current version cannot be downloaded (such as when operating in-app while offline), or for change control management.
 
-
 ### TCF version 1 of the Global Vendor List (deprecated)
 
 For reference, the URL for version 1 of the TCF was:
@@ -1588,31 +1508,27 @@ For reference, the URL for version 1 of the TCF was:
 
 Version 1 of the Global Vendor List and all version 1 archives will continue to be maintained until support officially ends in 2020. At that time, these files will be deprecated and only version 2 and newer of the Global Vendor List will be available.
 
-
 ### Translations for Purposes, Special Purposes, Features, and Special Features
 
 Translations of the names and descriptions for Purposes, Special Purposes, Features, and Special Features to non-English languages are contained in a file where attributes containing English content (except vendor declaration information) are translated, and can be found here:
 
 https://vendorlist.consensu.org/v2/purposes-{language}.json
 
-Where ‘language’ is a two letter lowercase ISO 639-1 language code. Supported languages are listed at the following URL:
+Where ‘language’ is a two letter lowercase [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) language code. Supported languages are listed at the following URL:
 
 [https://register.consensu.org/Translation](https://register.consensu.org/Translation)
-
 
 ### How often is the Global Vendor List updated?
 
 As of the publication of this document, changes to the Global Vendor List are published weekly at 5:00 PM Central European Time on Thursdays. IAB Europe reserves the right to change this time and will notify CMP members of any changes.
 
-
 ### CMPs using the GVL
 
-Any time the CMP user interface is surfaced  to a user to provide transparency and request consent, the **current **version of the GVL must be used to populate the user interface – this includes first-time interactions and renewal interactions.  When a user summons the CMP user interface manually to review their settings, the version of the GVL encoded in the TC String is used instead.
+Any time the CMP user interface is surfaced  to a user to provide transparency and request consent, the **current** version of the GVL must be used to populate the user interface – this includes first-time interactions and renewal interactions.  When a user summons the CMP user interface manually to review their settings, the version of the GVL encoded in the TC String is used instead.
 
 Within a mobile in-app context where the current version of the GVL cannot be loaded because of a lack of Internet connectivity, the most recently cached version of the GVL may be used – The latest version of the GVL must be retrieved as soon as connectivity is restored.
 
 CMPs must, of course, use specific versions of the GVL to determine if a CMP should be resurfaced to a user whom has a TC String encoded with a GVL version that is not the latest or if they are resurfacing the user interface upon the user’s request to review their settings.
-
 
 ### Vendors using the GVL
 
@@ -1625,8 +1541,7 @@ Vendors must use the version of the GVL encoded in the TC String received to det
 
 Given the scale of the TCF and the high volume of requests for the Global Vendor List, current and previous versions are configured with cache-control headers. All requests for the Global Vendor List must honour these headers and must not cache the resource with different settings. In this respect, “cache busting” techniques, like appending a query string parameter and a randomly generated value as part of the URL request to download the Global Vendor List in order to bypass the cache must not be used.
 
-**Note: **There may be a delay of up to the maximum cache interval in retrieving the latest version of the Global Vendor List.
-
+**Note:** There may be a delay of up to the maximum cache interval in retrieving the latest version of the Global Vendor List.
 
 #### CMPs caching the GVL
 
@@ -1639,186 +1554,217 @@ Because vendor requests for a GVL file will not be in a browser context, GVL fil
 
 Vendor application logic must only request one version of the GVL per vendor during the cache period specified in the cache-control header. For example, if the caching period is one week, only one request for the current GVL file must be received for a given vendor per week.
 
-**Note: **The volume of usage will be monitored carefully by the managing organisation (MO) and any vendor not adhering to this request limit will be blocked from accessing the GVL.
+**Note:** The volume of usage will be monitored carefully by the managing organisation (MO) and any vendor not adhering to this request limit will be blocked from accessing the GVL.
 
 
 #### Caching previous versions of the GVL
 
 Previous versions of the GVL must be cached for at least the period specified by the cache-control headers and may be cached indefinitely as they are static resources.
 
-
 #### Using a compressed version of the Global Vendor List
 
-In order to control the bandwidth used by requests for the GVL file, vendors and CMPs must request a compressed version of the GVL. This can be done by sending _Accept-Encoding_ headers on the GET request for the file.  Example:
+In order to control the bandwidth used by requests for the GVL file, vendors and CMPs must request a compressed version of the GVL. This can be done by sending `Accept-Encoding` headers on the `GET` request for the file.
 
+**Example:**
 
 ```
 Accept-Encoding: gzip, deflate, br
 ```
 
 
-A browser will add this header automatically and, therefore, nothing needs to be done for an in-browser request.  Server-side requests are another matter because server software may not decompress the response automatically. Make sure your server requests send the options your service is capable of decoding in your _Accept-Encoding_ header.
+A browser will add this header automatically and, therefore, nothing needs to be done for an in-browser request.  Server-side requests are another matter because server software may not decompress the response automatically. Make sure your server requests send the options your service is capable of decoding in your `Accept-Encoding` header.
 
 
 #### Global Vendor List and TCF Policy Updates
 
 When a change occurs in the TCF [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf), the update invalidates the previous declarations of vendors listed on the previous version of the GVL. These policy changes happen infrequently, but when they do, a CMP is required to discard the user’s current TC String and resurface the user interface to provide new disclosures, capture new consent, and encode a new TC String without migrating any old values over from the old one.
 
-To determine if TCF [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf) have changed, CMPs shall compare the _TcfPolicyVersion_ encoded in a TC String with the _TcfPolicyVersion _property in the latest Global Vendor List published by the Managing Organziation – if the values are different then the TCF Policy has changed and a CMP will be required to provide new disclosures, capture new consent, and encode a new TC String.
+To determine if TCF [Policies](http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf) have changed, CMPs shall compare the _**TcfPolicyVersion**_ encoded in a TC String with the _**TcfPolicyVersion**_ property in the latest Global Vendor List published by the Managing Organziation – if the values are different then the TCF Policy has changed and a CMP will be required to provide new disclosures, capture new consent, and encode a new TC String.
 
 
 ### Example Global Vendor List JSON Object
 
 Here is an annotated example of the GVL’s JSON format:
 
-
 ```javascript
 {
   "gvlSpecificationVersion": 2,
   "vendorListVersion": 133, // incremented with each published file change
   "tcfPolicyVersion": 2, // The TCF MO will increment this value whenever a GVL change (such as adding a new Purpose or Feature or a change in Purpose wording) legally invalidates existing TC Strings and requires CMPs to re-establish transparency and consent from users. TCF Policy changes should be relatively infrequent and only occur when necessary to support changes in global mandate. If the policy version number in the latest GVL is different from the value in your TC String, then you need to re-establish transparency and consent for that user. A version 1 format TC String is considered to have a version value of 1.
-
   "lastUpdated": "2018-05-28T00:00:00Z",
   "purposes": {
-	/*
-  	Information published for each Purpose
 
-
-  	"id": number, REQUIRED
-  	"name": string, REQUIRED
-      "description": string, REQUIRED
-      "descriptionLegal": string, REQUIRED
-  	"consentable": boolean, OPTIONAL, default=true  false means CMPs should never afford users the means to provide an opt-in consent choice
-  	"rightToObject": boolean, OPTIONAL, default=true  false means CMPs should never afford users the means to exercise a right to object
-	*/
-
-
-      "1": {
-    "id": 1,
-  		"name": "Storage and access of information",
-  		"description": "..."
-  		"descriptionLegal": "..."
-	},
-	// ... more purposes from id=2 to id=9 (up to no higher than id=24)
-	{
-      "10": {
-    "id": 10,
-  		"name": "Develop and improve product",
-  		"description": "...",
-  		"descriptionLegal": "...",
-  		"consentable": false,
-  		"rightToObject": false
-	},
-	{
-},
-"specialPurposes" : {
-	"1": {
-      		"id": 1,
-  		"name": "Security, Fraud Prevention, Debugging",
-  		"description": "...",
-  		"descriptionLegal": "...",
-  		"consentable": false,
-  		"rightToObject": false
-	},
-	"2": {
-      		"id": 2,
-  		"name": "Technical ad and content delivery",
-  		"description": "...",
-  		"descriptionLegal": "...",
-  		"consentable": false,
-  		"rightToObject": false
-	}
+    /**
+     * Information published for each Purpose
+     *
+     * "id": number, REQUIRED
+     * "name": string, REQUIRED
+     * "description": string, REQUIRED
+     * "descriptionLegal": string, REQUIRED
+     * "consentable": boolean, OPTIONAL, default=true  false means CMPs should never afford users the means to provide an opt-in consent choice
+     * "rightToObject": boolean, OPTIONAL, default=true  false means CMPs should never afford users the means to exercise a right to object
+    */
+    "1": {
+      "id": 1,
+      "name": "Storage and access of information",
+      "description": "...",
+      "descriptionLegal": "..."
+    },
+    // ... more purposes from id=2 to id=9 (up to no higher than id=24)
+    "10": {
+      "id": 10,
+      "name": "Develop and improve product",
+      "description": "...",
+      "descriptionLegal": "...",
+      "consentable": false,
+      "rightToObject": false
+    }
+  },
+  "specialPurposes" : {
+    "1": {
+      "id": 1,
+      "name": "Security, Fraud Prevention, Debugging",
+      "description": "...",
+      "descriptionLegal": "...",
+      "consentable": false,
+      "rightToObject": false
+    },
+    "2": {
+      "id": 2,
+      "name": "Technical ad and content delivery",
+      "description": "...",
+      "descriptionLegal": "...",
+      "consentable": false,
+      "rightToObject": false
+    }
   },
   "features" : {
-	"1": {
-  		"id": 1
-  		"name": "Matching Data to Offline Sources",
-  		"description": "Combining data from offline sources that were initially collected in other contexts",
-  		"descriptionLegal": "..."
-	}
-	// ... more features from id=2 up to no higher than id=64.
+    "1": {
+      "id": 1,
+      "name": "Matching Data to Offline Sources",
+      "description": "Combining data from offline sources that were initially collected in other contexts",
+      "descriptionLegal": "..."
+    }
+
+  // ... more features from id=2 up to no higher than id=64.
+
   },
-  // Special features differ from simple features in that CMPs MUST provide
-  // users with a means to signal an opt-in choice as to whether vendors
-  // may employ the feature when performing any purpose processing.
-  // See Policies for specifics.
+
+  /**
+   * Special features differ from simple features in that CMPs MUST provide
+   * users with a means to signal an opt-in choice as to whether vendors
+   * may employ the feature when performing any purpose processing.
+   * See Policies for specifics.
+   */
   "specialFeatures" : {
-	"1": {
-  		"id": 1
-  		"name": "Precise Geolocation",
-  		"description": "...",
-  		"descriptionLegal": "..."
-	},
-	"2": {
-  		"id": 2
-  		"name": "Active Fingerprinting",
-  		"description": "...",
-  		"descriptionLegal": "..."
-	}
-	// ... more special features from id=3 up to no higher than id=8.
+    "1": {
+      "id": 1,
+      "name": "Precise Geolocation",
+      "description": "...",
+      "descriptionLegal": "..."
+    },
+    "2": {
+      "id": 2,
+      "name": "Active Fingerprinting",
+      "description": "...",
+      "descriptionLegal": "..."
+    }
+
+  // ... more special features from id=3 up to no higher than id=8.
+    //
   },
   "vendors": {
-	/*
-  	Information published for each vendor
+  /**
+   * Information published for each vendor
+   *
+   * "id": numeric, REQUIRED
+   *
+   * "name": string, REQUIRED
+   *
+   * "purposes": array of positive integers, either purposes or
+   *
+   * "legIntPurposes" REQUIRED. Array may be empty. List of purpose ids
+   * declared as performed on the legal basis of consent
+   *
+   * "specialPurposes": array of positive integers, OPTIONAL. Array may be
+   * empty. List of Special Purposes declared as performed on the legal basis
+   * of a legitimate interest
+   *
+   * "flexiblePurposes": array of positive integers, OPTIONAL. Array may be
+   * empty. List of purpose ids where the vendor is flexible regarding the
+   * legal basis; they will perform the processing based on consent or a
+   * legitimate interest. The 'default' is determined by which of the other two
+   * mutually-exclusive purpose fields is used to declare the purpose for the
+   * vendor
+   *
+   * Constraints:
+   *   Either purposes OR legIntPurposes can be missing/empty, but not
+   *   both.
+   *
+   *   A Purpose id must not be present in both purposes and legIntPurposes
+   *
+   *   A Purpose id listed in flexiblePurposes must have been declared in one
+   *   of purposes or legIntPurposes.
+   *
+   *   Purpose id values included in the three purpose fields must be in the
+   *   range from 1 to N, where N is the highest purpose id published in this
+   *   GVL file.
+   *
+   * "features": array of positive integers, OPTIONAL. Array may be empty. List
+   * of Features the Vendor may utilize when performing some declared Purposes
+   * processing.
+   *
+   * "specialfeatures": array of positive integers, OPTIONAL. Array may be
+   * empty. List of Special Features the Vendor may utilize when performing
+   * some declared Purposes processing.
+   *
+   * "SpecialPurposes": array of positive integers, OPTIONAL. Array may be
+   * empty. List of Special Purposes declared as performed on the legal basis
+   * of a legitimate interest
+   *
+   * "policyUrl": url string, REQUIRED URL to the Vendor's privacy policy
+   * document.
+   *
+   * "deletedDate": date string ("2019-05-28T00:00:00Z") OPTIONAL, If present,
+   * vendor is considered deleted after this date/time and MUST NOT be
+   * established to users.
+   *
+   * "overflow": object specifying the vendor's http GET request length  limit
+   * OPTIONAL. Has the following members & values
+   *
+   *   "overflow": {
+   *     "httpGetLimit": 32   /* 32 or 128 are supported options */
+   *   }
+   *    If a vendor entry does not include this attribute then the vendor has no
+   *    overflow options and none can be inferred.
+   */
 
-  	"id": numeric, REQUIRED
-  	"name": string, REQUIRED
-      "purposeIds": array of positive integers, either purposeIds or legIntPurposeIDs REQUIRED. Array may be empty. List of purpose ids declared as performed on the legal basis of consent
-"specialPurposeIds": array of positive integers, OPTIONAL. Array may be empty. List of Special Purposes declared as performed on the legal basis of a legitimate interest
-  	"legIntPurposeIds": array of positive integers, either purposeIds or legIntPurposeIDs REQUIRED. Array may be empty. List of purpose ids declared as performed on the legal basis of a legitimate interest
-  	"flexiblePurposeIds": array of positive integers, OPTIONAL. Array may be empty. List of purpose ids where the vendor is flexible regarding the legal basis; they will perform the processing based on consent or a legitimate interest. The 'default' is determined by which of the other two mutually-exclusive purpose fields is used to declare the purpose for the vendor
-
-Constraints:
-
-```
-
-
-
-*   `Either purposeIds OR legIntPurposeIds can be missing/empty, but not both.`
-*   `A purpose id must not be present in both purposeIds and legIntPurposeIds`
-*   `A purpose id listed in flexiblePurposeIds must have been declared in one of purposeIds or legIntPurposeIds.`
-*   `Purpose id values included in the three purpose fields must be in the range from 1 to N, where N is the highest purpose id published in this GVL file.`
-
-
-```
-  	"featureIds": array of positive integers, OPTIONAL. Array may be empty. List of Features the Vendor may utilize when performing some declared Purposes processing.
-      "specialFeatureIds": array of positive integers, OPTIONAL. Array may be empty. List of Special Features the Vendor may utilize when performing some declared Purposes processing.
-"SpecialPurposes": array of positive integers, OPTIONAL. Array may be empty. List of Special Purposes declared as performed on the legal basis of a legitimate interest
-  	"policyUrl": url string, REQUIRED URL to the Vendor's privacy policy document.
-      "deletedDate": date string ("2019-05-28T00:00:00Z") OPTIONAL, If present, vendor is considered deleted after this date/time and MUST NOT be established to users.
-      "overflow": object specifying the vendor's http GET request length  limit OPTIONAL. Has the following members & values
-
-      "overflow": {
-          "httpGetLimit": 32   /* 32 or 128 are supported options */
+  "1":{
+    "id": 1,
+    "name": "Vendor Name",
+    "purposes": [1],
+    "specialPurposes": [1],
+    "legIntPurposes": [2, 3],
+    "flexiblePurposes": [1, 2],
+    "features": [1, 2],
+    "specialfeatures": [1, 2],
+    "policyUrl": "https://vendorname.com/gdpr.html",
+    "deletedDate": "2019-02-28T00:00:00Z",
+    "overflow": {
+      "httpGetLimit": 32   /* 32 or 128 are supported options */
       }
-If a vendor entry does not include this attribute then the vendor has no overflow options and none can be inferred.
-    */
+    }
+  // ... more vendors
+  },
 
-    "1":{
-	"id": 1,
-  	"name": "Vendor Name",
-  	"purposeIds": [1],
-	"specialPurposes": [1],
-  	"legIntPurposeIds": [2, 3],
-      "flexiblePurposeIds": [1, 2],
-      "featureIds": [1, 2],
-  	"specialFeatureIds": [1, 2],
-  	"policyUrl": "https://vendorname.com/gdpr.html",
-  	"deletedDate": "2019-02-28T00:00:00Z",
-      "overflow": {
-          "httpGetLimit": 32   /* 32 or 128 are supported options */
-      }
-    },
-    // ... more vendors
+  "stacks": {
+    "1": {
+      "id": 1,
+      "purposes" : [1,2,3 ...],
+      "specialPurposes" : [1,2,3 ...],
+      "name" : "...",
+      "description" : "...",
+    }
   }
-
- "stacks": {
-  "1": {
-   	"id": 1,
-   	"purposes" : [1,2,3 ...],
-   	"specialPurposes" : [1,2,3 ...],
-   	"name" : "...",
-   	"description" : "...",
-  }
- }
 }
+```
