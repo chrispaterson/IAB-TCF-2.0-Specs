@@ -119,7 +119,7 @@ Consent Manager Provider JS API
 
 IAB Europe Transparency & Consent Framework (TCF) has a simple objective to help all parties in the digital advertising chain ensure that they comply with the EU’s General Data Protection Regulation and ePrivacy Directive when processing personal data or accessing and/or storing information on a user’s device, such as cookies, advertising identifiers, device identifiers and other tracking technologies. IAB Tech Lab stewards the development of these technical specifications.
 
-Resources including policy FAQ, Global Vendor List, and CMP List can be found at [iabeurope.eu/tcf](http://iabeurope.eu/tcf).
+Resources including policy FAQ, [Global Vendor List](#the-global-vendor-list), and CMP List can be found at [iabeurope.eu/tcf](http://iabeurope.eu/tcf).
 
 
 ### License
@@ -169,7 +169,7 @@ A TC String contains the following information:
 
 
 
-1. **General metadata:** standard markers that indicate details about a TC String such as its encoding version, when it was last updated, and when it was initially created as well as details about the conditions of the transparency and consent values it contains such as the Global Vendor List version used, the CMP used, etc.
+1. **General metadata:** standard markers that indicate details about a TC String such as its encoding version, when it was last updated, and when it was initially created as well as details about the conditions of the transparency and consent values it contains such as the [Global Vendor List](#the-global-vendor-list) version used, the CMP used, etc.
 2. **User consent:** a user’s expression of consent given for processing their data. A user’s consent is expressed on two levels: per Purpose and per Vendor.
 3. **Legitimate interest:** the record of a CMP having established legitimate interest transparency for a vendor and/or purpose and whether the user exercised their “Right to Object” to it.  This includes signals for Purposes in general and Purposes declared specifically for a given Vendor.
 4. **Publisher restrictions:** the restrictions of a vendors' data processing by a publisher within the context of the users trafficking their digital property.
@@ -617,7 +617,7 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>One bit for each Special Feature:<br /><br /><code>1</code> Opted in<br /><code>0</code> Not opted in
    </td>
-   <td>The TCF <a href="http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf">Policies</a> designates certain Features as “special” which means a CMP must afford the user a means to opt in to their use. These “Special Features” are published and numerically identified in the Global Vendor List separately from normal Features.
+   <td>The TCF <a href="http://www.iabeurope.eu/tcfdocuments/documents/legal/tcfpolicyFINALv2.pdf">Policies</a> designates certain Features as “special” which means a CMP must afford the user a means to opt in to their use. These “Special Features” are published and numerically identified in the <a href="#the-global-vendor-list">Global Vendor List</a> separately from normal Features.
    </td>
   </tr>
   <tr>
@@ -629,7 +629,7 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>One bit for each Purpose:<br /><br /><code>1</code> Consent<br /><code>0</code> No Consent
    </td>
-   <td>The user’s consent value for each Purpose established on the legal basis of consent.<br/><br />The Purposes are numerically identified and published in the Global Vendor List. From left to right, Purpose 1 maps to the <code>0</code>th bit, purpose 24 maps to the bit at index 23. Special Purposes are a different ID space and not included in this field.
+   <td>The user’s consent value for each Purpose established on the legal basis of consent.<br/><br />The Purposes are numerically identified and published in the <a href="#the-global-vendor-list">Global Vendor List</a>. From left to right, Purpose 1 maps to the <code>0</code>th bit, purpose 24 maps to the bit at index 23. Special Purposes are a different ID space and not included in this field.
    </td>
   </tr>
   <tr>
@@ -1401,7 +1401,7 @@ The [Publisher TC](#publisher-purposes-transparency-and-consent) segment in the 
    </td>
    <td>The user’s consent value for each Purpose established on the legal basis of consent, for the publisher
 <p>
-The Purposes are numerically identified and published in the Global Vendor List. From left to right, Purpose 1 maps to the <code>0</code>th bit, purpose 24 maps to the bit at index 23.
+The Purposes are numerically identified and published in the <a href="#the-global-vendor-list">Global Vendor List</a>. From left to right, Purpose 1 maps to the <code>0</code>th bit, purpose 24 maps to the bit at index 23.
    </td>
   </tr>
   <tr>
