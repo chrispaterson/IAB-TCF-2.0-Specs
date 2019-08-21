@@ -565,7 +565,7 @@ The following fields are stored in big-endian format. Example values are provide
    </td>
    <td>12 bits
    </td>
-   <td>Two-letter <a href="https://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a>language code in which the CMP UI was presented
+   <td>Two-letter <a href="https://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> language code in which the CMP UI was presented
    </td>
    <td>Each letter is encoded as 6 bits, a=0..z=25.
    </td>
