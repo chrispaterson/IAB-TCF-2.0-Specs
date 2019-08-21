@@ -472,7 +472,7 @@ The _**[Core String](#the-core-string)**_ is always required and comes first and
 
 For example, a globally-scoped TC String with all four segments present would be surfaced through CMP API – not stored – and look like:
 
-[ _**[Core String](#the-core-string)**_ ].[ [Disclosed Vendors](#disclosed-vendors-oob)**_ ].[ _**[AllowedVendors](#allowed-vendors-oob)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ ]
+[ _**[Core String](#the-core-string)**_ ].[ _**[Disclosed Vendors](#disclosed-vendors-oob)**_ ].[ _**[AllowedVendors](#allowed-vendors-oob)**_ ].[ _**[Publisher TC](#publisher-purposes-transparency-and-consent)**_ ]
 
 ```
 BObdrPUOevsguAfDqFENCNAAAAAmeAAA.PVAfDObdrA.DqFENCAmeAENCDA.OevsguAfDq
