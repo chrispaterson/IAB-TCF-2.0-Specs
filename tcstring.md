@@ -343,7 +343,7 @@ The service making the call must replace the macros with appropriate values desc
 
 #### CMP Redirect for TC String
 
-CMP's can implement a consent redirector and host it at `https://cmpname.mgr.consensu.org/consent?redirect=url`. This redirector can read the (web-wide global) consent cookie which the browser sends with a 302 HTTP redirect url using the parameters described in the previous section.
+CMP's can implement a consent redirector and host it at `https://[cmpname].mgr.consensu.org/consent?redirect=url`. This redirector can read the (web-wide global) consent cookie which the browser sends with a 302 HTTP redirect url using the parameters described in the previous section.
 
 ### What if consent is governed differently in a country?
 
