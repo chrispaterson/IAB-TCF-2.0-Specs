@@ -222,7 +222,7 @@ When configured to use globally-scoped TC Strings CMPs must not overwrite any of
 
 *   Decode the TC String from the global scope to load and preserve all existing signals
 *   Set the signals for the vendors specified in the CMP user interface. If a subset of vendors is shown in the CMP user interface, the CMP must only set signals for those vendors.
-*   If a CMP is unable to resolve an ambgious negative vendor signal – unable to differentiate between a “no” and a “never disclosed” – a CMP shall disambiguate the signal with the corresponding value in the [Vendors Disclosed](#heading=h.ifuzicjs0ou3) segment since that segment signals which vendors were disclosed to the user.
+*   If a CMP is unable to resolve an ambgious negative vendor signal – unable to differentiate between a “no” and a “never disclosed” – a CMP shall disambiguate the signal with the corresponding value in the _**[DisclosedVendors ](#disclosed-vendors-oob)**_ segment since that segment signals which vendors were disclosed to the user.
 *   Once the user has made their selections the CMP shall save the resulting TC String back to the global context, overwriting the old one.
 
 
